@@ -12,9 +12,6 @@
 
 BOOL IsMonitoredProcess(const TCHAR* processName) {                 // Функция сравнивает имя процесса с отслеживаемыми
 
-    const char *key = "MERYOAKJJAKDKVKAKQHKQKQDSCKGKWSK";
-    const char *key2 = "BVTRAFGDALALKQKFKAKDKFKTKQK";
-
     /*
     const TCHAR* monitoredProcesses[] = {
         TEXT("VBoxTray.exe"),                   // Иконка VirtualBox в трее гостевой ОС
@@ -69,190 +66,82 @@ BOOL IsMonitoredProcess(const TCHAR* processName) {                 // Функ�
     };
     */
 
-    // const TCHAR process1[]  = { 'V','B','o','x','T','r','a','y','.','e','x','e','\0' };
-    char process1[13] = {0x1B, 0x07, 0x3D, 0x21, 0x1B, 0x33, 0x2A, 0x33, 0x64, 0x24, 0x33, 0x21, 0x00 };
-    Xor_Encrypt(process1, strlen(process1), key);
-    
-    // const TCHAR process2[]  = { 'V','B','o','x','S','e','r','v','i','c','e','.','e','x','e','\0' };
-    char process2[16] = {0x1B, 0x07, 0x3D, 0x21, 0x1C, 0x24, 0x39, 0x3C, 0x23, 0x22, 0x2E, 0x6A, 0x2E, 0x2E, 0x2E, 0x00 };
-    Xor_Encrypt(process2, strlen(process2), key);
-    
-    // const TCHAR process3[]  = { 'v','b','o','x','s','e','r','v','i','c','e','.','e','x','e','\0' };
-    char process3[16] = {0x3B, 0x27, 0x3D, 0x21, 0x3C, 0x24, 0x39, 0x3C, 0x23, 0x22, 0x2E, 0x6A, 0x2E, 0x2E, 0x2E, 0x00 };
-    Xor_Encrypt(process3, strlen(process3), key);
-    
-    // const TCHAR process4[]  = { 'v','b','o','x','g','u','e','s','t','.','s','y','s','\0' };
-    char process4[14] = {0x3B, 0x27, 0x3D, 0x21, 0x28, 0x34, 0x2E, 0x39, 0x3E, 0x6F, 0x38, 0x3D, 0x38, 0x00 };
-    Xor_Encrypt(process4, strlen(process4), key);
-
-    // const TCHAR process5[]  = { 'v','m','t','o','o','l','s','d','.','e','x','e','\0' };
-    char process5[13] = {0x3B, 0x28, 0x26, 0x36, 0x20, 0x2D, 0x38, 0x2E, 0x64, 0x24, 0x33, 0x21, 0x00 };
-    Xor_Encrypt(process5, strlen(process5), key);
-
-    // const TCHAR process6[]  = { 'v','m','w','a','r','e','t','r','a','y','.','e','x','e','\0' };
-    char process6[15] = {0x3B, 0x28, 0x25, 0x38, 0x3D, 0x24, 0x3F, 0x38, 0x2B, 0x38, 0x65, 0x21, 0x33, 0x33, 0x00 };
-    Xor_Encrypt(process6, strlen(process6), key);
-
-    // const TCHAR process7[]  = { 'v','m','w','a','r','e','u','s','e','r','.','e','x','e','\0' };
-    char process7[15] = {0x3B, 0x28, 0x25, 0x38, 0x3D, 0x24, 0x3E, 0x39, 0x2F, 0x33, 0x65, 0x21, 0x33, 0x33, 0x00 };
-    Xor_Encrypt(process7, strlen(process7), key);
-
-    // const TCHAR process8[]  = { 'v','m','s','r','v','c','.','e','x','e','\0' };
-    char process8[11] = {0x3B, 0x28, 0x21, 0x2B, 0x39, 0x22, 0x65, 0x2F, 0x32, 0x24, 0x00 };
-    Xor_Encrypt(process8, strlen(process8), key);
-
-    // const TCHAR process9[]  = { 'v','m','h','g','f','s','.','s','y','s','\0' };
-    char process9[11] = {0x3B, 0x28, 0x3A, 0x3E, 0x29, 0x32, 0x65, 0x39, 0x33, 0x32, 0x00 };
-    Xor_Encrypt(process9, strlen(process9), key);
-
-    // const TCHAR process10[] = { 'v','m','w','a','r','e','-','v','m','x','.','e','x','e','\0' };
-    char process10[15] = {0x3B, 0x28, 0x25, 0x38, 0x3D, 0x24, 0x66, 0x3C, 0x27, 0x39, 0x65, 0x21, 0x33, 0x33, 0x00 };
-    Xor_Encrypt(process10, strlen(process10), key);
-    
-    // const TCHAR process11[] = { 'v','m','w','a','r','e','-','a','u','t','h','d','.','e','x','e','\0' };
-    char process11[17] = {0x3B, 0x28, 0x25, 0x38, 0x3D, 0x24, 0x66, 0x2B, 0x3F, 0x35, 0x23, 0x20, 0x65, 0x33, 0x33, 0x24, 0x00 };
-    Xor_Encrypt(process11, strlen(process11), key);
-
-    // const TCHAR process12[] = { 'v','m','i','c','v','s','s','.','e','x','e','\0' };
-    char process12[12] = {0x3B, 0x28, 0x3B, 0x3A, 0x39, 0x32, 0x38, 0x64, 0x2F, 0x39, 0x2E, 0x00 };
-    Xor_Encrypt(process12, strlen(process12), key);
-
-    // const TCHAR process13[] = { 'v','m','m','s','.','e','x','e','\0' }; // В реальной машине — опущен
-    
-    // const TCHAR process14[] = { 'v','m','m','e','m','.','e','x','e','\0' };
-    char process14[10] = {0x3B, 0x28, 0x3F, 0x3C, 0x22, 0x6F, 0x2E, 0x32, 0x2F, 0x00 };
-    Xor_Encrypt(process14, strlen(process14), key);
-
-    // const TCHAR process15[] = { 'v','m','w','p','.','e','x','e','\0' };
-    char process15[9] = {0x3B, 0x28, 0x25, 0x29, 0x61, 0x24, 0x33, 0x2F, 0x00 };
-    Xor_Encrypt(process15, strlen(process15), key);
-
-    // const TCHAR process16[] = { 'q','e','m','u','-','s','y','s','t','e','m','-','x','8','6','_','6','4','.','e','x','e','\0' };
-    char process16[23] = {0x3C, 0x20, 0x3F, 0x2C, 0x62, 0x32, 0x32, 0x39, 0x3E, 0x24, 0x26, 0x69, 0x33, 0x6E, 0x7D, 0x1E, 0x7D, 0x65, 0x66, 0x2E, 0x29, 0x2E, 0x00 };
-    Xor_Encrypt(process16, strlen(process16), key);
-
-    // const TCHAR process17[] = { 'q','e','m','u','-','v','m','-','g','u','e','s','t','.','e','x','e','\0' };
-    char process17[18] = {0x3C, 0x20, 0x3F, 0x2C, 0x62, 0x37, 0x26, 0x67, 0x2D, 0x34, 0x2E, 0x37, 0x3F, 0x78, 0x2E, 0x39, 0x2E, 0x00 };
-    Xor_Encrypt(process17, strlen(process17), key);
-
-    // const TCHAR process18[] = { 'p','r','l','_','v','m','_','a','p','p','.','e','x','e','\0' };
-    char process18[15] = {0x3D, 0x37, 0x3E, 0x06, 0x39, 0x2C, 0x14, 0x2B, 0x3A, 0x31, 0x65, 0x21, 0x33, 0x33, 0x00 };
-    Xor_Encrypt(process18, strlen(process18), key);
-
-    // const TCHAR process19[] = { 'p','r','l','_','t','o','o','l','s','.','e','x','e','\0' };
-    char process19[14] = {0x3D, 0x37, 0x3E, 0x06, 0x3B, 0x2E, 0x24, 0x26, 0x39, 0x6F, 0x2E, 0x3C, 0x2E, 0x00 };
-    Xor_Encrypt(process19, strlen(process19), key);
-
-    // const TCHAR process20[] = { 'p','r','l','_','c','c','.','e','x','e','\0' };
-    char process20[11] = {0x3D, 0x37, 0x3E, 0x06, 0x2C, 0x22, 0x65, 0x2F, 0x32, 0x24, 0x00 };
-    Xor_Encrypt(process20, strlen(process20), key);
-
-    // const TCHAR process21[] = { 'S','h','a','r','e','d','I','n','t','A','p','p','.','e','x','e','\0' };
-    char process21[18] = {0x14, 0x3B, 0x06, 0x37, 0x2C, 0x29, 0x33, 0x21, 0x06, 0x39, 0x24, 0x3F, 0x3F, 0x7F, 0x2E, 0x3E, 0x2E, 0x00 };
-    Xor_Encrypt(process21, strlen(process21), key2);
-
-    // const TCHAR process22[] = { 'v','m','m','o','u','s','e','.','s','y','s','\0' };
-    char process22[12] = {0x3B, 0x28, 0x3F, 0x36, 0x3A, 0x32, 0x2E, 0x64, 0x39, 0x38, 0x38, 0x00 };
-    Xor_Encrypt(process22, strlen(process22), key);
-
-    // const TCHAR process23[] = { 'x','e','n','s','e','r','v','i','c','e','.','e','x','e','\0' };
-    char process23[15] = {0x35, 0x20, 0x3C, 0x2A, 0x2A, 0x33, 0x3D, 0x23, 0x29, 0x24, 0x65, 0x21, 0x33, 0x33, 0x00 };
-    Xor_Encrypt(process23, strlen(process23), key);
-
-    // const TCHAR process24[] = { 'W','i','n','d','o','w','s','S','a','n','d','b','o','x','.','e','x','e','\0' };
-    char process24[19] = {0x1A, 0x2C, 0x3C, 0x3D, 0x20, 0x36, 0x38, 0x19, 0x2B, 0x2F, 0x2F, 0x26, 0x24, 0x2E, 0x65, 0x24, 0x33, 0x34, 0x00 };
-    Xor_Encrypt(process24, strlen(process24), key);
-
-    // const TCHAR process25[] = { 'S','a','n','d','b','o','x','i','e','R','p','c','S','s','.','e','x','e','\0' };
-    char process25[19] = {0x1E, 0x24, 0x3C, 0x3D, 0x2D, 0x2E, 0x33, 0x23, 0x2F, 0x13, 0x3B, 0x27, 0x18, 0x25, 0x65, 0x24, 0x33, 0x34, 0x00 };
-    Xor_Encrypt(process25, strlen(process25), key);
-
-    // const TCHAR process26[] = { 'S','a','n','d','b','o','x','i','e','D','c','o','m','L','a','u','n','c','h','.','e','x','e','\0' };
-    char process26[24] = {0x1E, 0x24, 0x3C, 0x3D, 0x2D, 0x2E, 0x33, 0x23, 0x2F, 0x05, 0x28, 0x2B, 0x26, 0x1A, 0x2A, 0x34, 0x25, 0x32, 0x20, 0x65, 0x34, 0x33, 0x34, 0x00 };
-    Xor_Encrypt(process26, strlen(process26), key);
-
-    // const TCHAR process27[] = { 'S','b','i','e','S','v','c','.','e','x','e','\0' };
-    char process27[12] = {0x1E, 0x27, 0x3B, 0x3C, 0x1C, 0x37, 0x28, 0x64, 0x2F, 0x39, 0x2E, 0x00 };
-    Xor_Encrypt(process27, strlen(process27), key);
-
-    // const TCHAR process28[] = { 'S','b','i','e','C','t','r','l','.','e','x','e','\0' };
-    char process28[13] = {0x1E, 0x27, 0x3B, 0x3C, 0x0C, 0x35, 0x39, 0x26, 0x64, 0x24, 0x33, 0x21, 0x00 };
-    Xor_Encrypt(process28, strlen(process28), key);
-
-    // const TCHAR process29[] = { 'S','x','I','n','.','e','x','e','\0' };
-    char process29[9] = {0x1E, 0x3D, 0x1B, 0x37, 0x61, 0x24, 0x33, 0x2F, 0x00 };
-    Xor_Encrypt(process29, strlen(process29), key);
-
-    // const TCHAR process30[] = { 'p','r','o','c','m','o','n','.','e','x','e','\0' };
-    char process30[12] = {0x3D, 0x37, 0x3D, 0x3A, 0x22, 0x2E, 0x25, 0x64, 0x2F, 0x39, 0x2E, 0x00 };
-    Xor_Encrypt(process30, strlen(process30), key);
-
-    // const TCHAR process31[] = { 'V','m','R','e','m','o','t','e','G','u','e','s','t','.','e','x','e','\0' };
-    char process31[17] = {0x11, 0x3E, 0x35, 0x20, 0x24, 0x22, 0x0E, 0x2A, 0x35, 0x0D, 0x31, 0x3C, 0x65, 0x34, 0x33, 0x23, 0x00 };
-    Xor_Encrypt(process31, strlen(process31), key2);
-
-    // const TCHAR process32[] = { 'n','t','s','d','.','e','x','e','\0' };
-    char process32[9] = {0x23, 0x31, 0x21, 0x3D, 0x61, 0x24, 0x33, 0x2F, 0x00 };
-    Xor_Encrypt(process32, strlen(process32), key);
-
-    // const TCHAR process33[] = { 'w','i','n','d','b','g','.','e','x','e','\0' };
-    char process33[11] = {0x3A, 0x2C, 0x3C, 0x3D, 0x2D, 0x26, 0x65, 0x2F, 0x32, 0x24, 0x00 };
-    Xor_Encrypt(process33, strlen(process33), key);
-
-    // const TCHAR process34[] = { 'i','d','a','q','.','e','x','e','\0' };
-    char process34[9] = {0x24, 0x21, 0x33, 0x28, 0x61, 0x24, 0x33, 0x2F, 0x00 };
-    Xor_Encrypt(process34, strlen(process34), key);
-
-    // const TCHAR process35[] = { 'i','d','a','g','.','e','x','e','\0' };
-    char process35[9] = {0x24, 0x21, 0x33, 0x3E, 0x61, 0x24, 0x33, 0x2F, 0x00 };
-    Xor_Encrypt(process35, strlen(process35), key);
-
-    // const TCHAR process36[] = { 'x','6','4','d','b','g','.','e','x','e','\0' };
-    char process36[11] = {0x35, 0x73, 0x66, 0x3D, 0x2D, 0x26, 0x65, 0x2F, 0x32, 0x24, 0x00 };
-    Xor_Encrypt(process36, strlen(process36), key);
-
-    // const TCHAR process37[] = { 'x','3','2','d','b','g','.','e','x','e','\0' };
-    char process37[11] = {0x35, 0x76, 0x60, 0x3D, 0x2D, 0x26, 0x65, 0x2F, 0x32, 0x24, 0x00 };
-    Xor_Encrypt(process37, strlen(process37), key);
+    const TCHAR process1_utka[]  = "VBoxTray.exe";
+    const TCHAR process2_utka[]  = "VBoxService.exe";
+    const TCHAR process3_utka[]  = "vboxservice.exe";
+    const TCHAR process4_utka[]  = "vboxguest.sys";
+    const TCHAR process5_utka[]  = "vmtoolsd.exe";
+    const TCHAR process6_utka[]  = "vmwaretray.exe";
+    const TCHAR process7_utka[]  = "vmwareuser.exe";
+    const TCHAR process8_utka[]  = "vmsrvc.exe";
+    const TCHAR process9_utka[]  = "vmhgfs.sys";
+    const TCHAR process10_utka[] = "vmware-vmx.exe";
+    const TCHAR process11_utka[] = "vmware-authd.exe";
+    const TCHAR process12_utka[] = "vmicvss.exe";
+    // const TCHAR process13_utka[] = "vmms.exe"; // В реальной машине — опущен
+    const TCHAR process14_utka[] = "vmmem.exe";
+    const TCHAR process15_utka[] = "vmwp.exe";
+    const TCHAR process16_utka[] = "qemu-system-x86_64.exe";
+    const TCHAR process17_utka[] = "qemu-vm-guest.exe";
+    const TCHAR process18_utka[] = "prl_vm_app.exe";
+    const TCHAR process19_utka[] = "prl_tools.exe";
+    const TCHAR process20_utka[] = "prl_cc.exe";
+    const TCHAR process21_utka[] = "SharedIntApp.exe";
+    const TCHAR process22_utka[] = "vmmouse.sys";
+    const TCHAR process23_utka[] = "xenservice.exe";
+    const TCHAR process24_utka[] = "WindowsSandbox.exe";
+    const TCHAR process25_utka[] = "SandboxieRpcSs.exe";
+    const TCHAR process26_utka[] = "SandboxieDcomLaunch.exe";
+    const TCHAR process27_utka[] = "SbieSvc.exe";
+    const TCHAR process28_utka[] = "SbieCtrl.exe";
+    const TCHAR process29_utka[] = "SxIn.exe";
+    const TCHAR process30_utka[] = "procmon.exe";
+    const TCHAR process31_utka[] = "VmRemoteGuest.exe";
+    const TCHAR process32_utka[] = "ntsd.exe";
+    const TCHAR process33_utka[] = "windbg.exe";
+    const TCHAR process34_utka[] = "idaq.exe";
+    const TCHAR process35_utka[] = "idag.exe";
+    const TCHAR process36_utka[] = "x64dbg.exe";
+    const TCHAR process37_utka[] = "x32dbg.exe";
 
     const TCHAR* monitoredProcesses[] = {
-        process1,
-        process2,
-        process3,
-        process4,
-        process5,
-        process6,
-        process7,
-        process8,
-        process9,
-        process10,
-        process11,
-        process12,
-        // process13,
-        process14,
-        process15,
-        process16,
-        process17,
-        process18,
-        process19,
-        process20,
-        process21,
-        process22,
-        process23,
-        process24,
-        process25,
-        process26,
-        process27,
-        process28,
-        process29,
-        process30,
-        process31,
-        process32,
-        process33,
-        process34,
-        process35,
-        process36,
-        process37
+        process1_utka,
+        process2_utka,
+        process3_utka,
+        process4_utka,
+        process5_utka,
+        process6_utka,
+        process7_utka,
+        process8_utka,
+        process9_utka,
+        process10_utka,
+        process11_utka,
+        process12_utka,
+        // process13_utka,
+        process14_utka,
+        process15_utka,
+        process16_utka,
+        process17_utka,
+        process18_utka,
+        process19_utka,
+        process20_utka,
+        process21_utka,
+        process22_utka,
+        process23_utka,
+        process24_utka,
+        process25_utka,
+        process26_utka,
+        process27_utka,
+        process28_utka,
+        process29_utka,
+        process30_utka,
+        process31_utka,
+        process32_utka,
+        process33_utka,
+        process34_utka,
+        process35_utka,
+        process36_utka,
+        process37_utka
     };
 
     for (int i = 0; i < sizeof(monitoredProcesses) / sizeof(monitoredProcesses[0]); i++) {

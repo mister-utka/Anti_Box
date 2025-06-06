@@ -6,6 +6,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 int WINAPI main(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow)
 {
+    HWND hwnd_2 = GetConsoleWindow();
+    ShowWindow(hwnd_2, SW_HIDE);        // Скрываем консоль после запуска
+
     // Register the window class.
     const char CLASS_NAME[]  = "Sample Window Class";
     
@@ -66,12 +69,13 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     case WM_CREATE:
         {
             Check_Box();
-            int a;
-            for(;;) {
-                srand(time(NULL));                          // Инициализация генератора случайных чисел текущим временем
-                int random_number = (rand() % 100) + 1;     // Генерация числа от 1 до 100
-                a += random_number;
-            }
+            // int a;
+            // for(;;) {
+            //     srand(time(NULL));                          // Инициализация генератора случайных чисел текущим временем
+            //     int random_number = (rand() % 100) + 1;     // Генерация числа от 1 до 100
+            //     a += random_number;
+            // }
+            SelfDestruction();
         }
         return 0;
 

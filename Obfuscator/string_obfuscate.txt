@@ -17,8 +17,8 @@ Reverse_Shell
 
 ########### proxy_funck.h ##########
 
-funcName
-name_dll
+funcName_utka
+name_dll_utka
 hKernel32
 hIphlpApi
 hPsApi
@@ -271,6 +271,17 @@ pGetCursorPos
 GetCursorPosFunc
 lpPoint
 
+ProxyGetModuleFileNameA
+pGetModuleFileNameA
+GetModuleFileNameAFunc
+
+ProxyGetTempPathA
+pGetTempPathA
+GetTempPathAFunc
+
+ProxyShellExecuteA
+pShellExecute
+ShellExecuteAFunc
 
 ########## check_cpu.c ##########
 
@@ -318,4 +329,9 @@ WinInet_Post
 ########## reverse_shell.c ##########
 
 ########## check_mouse.c ##########
+
+########## encrypt_char.c ##########
+
+arc4_init
+arc4_crypt
 

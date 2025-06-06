@@ -95,9 +95,6 @@ int Get_First_Video_Code(char* video_device_code)
 
 int Check_First_Video_Device()
 {
-    const char *key = "PZCXZCGZHCVZPQTTQZCMQAASD";
-    const char *key2 = "LKWZSRTYWQZXCMBNVCRTGHKHG";
-
     DISPLAY_DEVICE dd;                                          // Структура для хранения информации о видеоконтроллере
     ZeroMemory(&dd, sizeof(dd));                                // Структура для хранения информации о настройках экрана
     dd.cb = sizeof(dd);                                         // Указываем размер структуры
@@ -122,64 +119,31 @@ int Check_First_Video_Device()
     };
     */
 
-
-    // char virtual_keyword1[] = { 'M','i','c','r','o','s','o','f','t',' ','B','a','s','i','c',' ','D','i','s','p','l','a','y',' ','A','d','a','p','t','e','r','\0' };
-    char virtual_keyword1[32] = {0x1D, 0x33, 0x20, 0x2A, 0x35, 0x30, 0x28, 0x3C, 0x3C, 0x63, 0x14, 0x3B, 0x23, 0x38, 0x37, 0x74, 0x15, 0x33, 0x30, 0x3D, 0x3D, 0x20, 0x38, 0x73, 0x05, 0x34, 0x3B, 0x33, 0x2C, 0x3F, 0x31, 0x00 };
-    Xor_Encrypt(virtual_keyword1, strlen(virtual_keyword1), key);
-    
-    // char virtual_keyword2[] = { 'V','M','w','a','r','e',' ','S','V','G','A',' ','3','D','\0' };
-    char virtual_keyword2[15] = {0x06, 0x17, 0x34, 0x39, 0x28, 0x26, 0x67, 0x09, 0x1E, 0x04, 0x17, 0x7A, 0x63, 0x15, 0x00 };
-    Xor_Encrypt(virtual_keyword2, strlen(virtual_keyword2), key);
-
-    // char virtual_keyword3[] = { 'V','i','r','t','u','a','l','B','o','x',' ','G','r','a','p','h','i','c','s',' ','A','d','a','p','t','e','r','\0' };
-    char virtual_keyword3[28] = {0x06, 0x33, 0x31, 0x2C, 0x2F, 0x22, 0x2B, 0x18, 0x27, 0x3B, 0x76, 0x1D, 0x22, 0x30, 0x24, 0x3C, 0x38, 0x39, 0x30, 0x6D, 0x10, 0x25, 0x20, 0x23, 0x30, 0x35, 0x28, 0x00 };
-    Xor_Encrypt(virtual_keyword3, strlen(virtual_keyword3), key);
-    
-    // char virtual_keyword4[] = { 'H','y','p','e','r','-','V',' ','V','i','d','e','o','\0' };
-    char virtual_keyword4[14] = {0x18, 0x23, 0x33, 0x3D, 0x28, 0x6E, 0x11, 0x7A, 0x1E, 0x2A, 0x32, 0x3F, 0x3F, 0x00 };
-    Xor_Encrypt(virtual_keyword4, strlen(virtual_keyword4), key);
-
-    // char virtual_keyword5[] = { 'P','a','r','a','l','l','e','l','s',' ','D','i','s','p','l','a','y',' ','A','d','a','p','t','e','r',' ','(','W','D','D','M',')','\0' };
-    char virtual_keyword5[26] = {0x1C, 0x2A, 0x25, 0x3B, 0x3F, 0x3E, 0x31, 0x35, 0x24, 0x71, 0x1E, 0x31, 0x30, 0x3D, 0x2E, 0x2F, 0x2F, 0x63, 0x13, 0x30, 0x26, 0x38, 0x3F, 0x2D, 0x35, 0x00 };
-    Xor_Encrypt(virtual_keyword5, strlen(virtual_keyword5), key2);
-
-    // char virtual_keyword6[] = { 'Q','X','L','\0' };
-    char virtual_keyword6[4] = {0x1D, 0x13, 0x1B, 0x00 };
-    Xor_Encrypt(virtual_keyword6, strlen(virtual_keyword6), key2);
-
-    // char virtual_keyword7[] = { 'R','e','d',' ','H','a','t',' ','Q','X','L','\0' };
-    char virtual_keyword7[12] = {0x02, 0x3F, 0x27, 0x78, 0x12, 0x22, 0x33, 0x7A, 0x19, 0x1B, 0x1A, 0x00 };
-    Xor_Encrypt(virtual_keyword7, strlen(virtual_keyword7), key);
-    
-    // char virtual_keyword8[] = { 'X','e','n',' ','V','G','A','\0' };
-    char virtual_keyword8[8] = {0x08, 0x3F, 0x2D, 0x78, 0x0C, 0x04, 0x06, 0x00 };
-    Xor_Encrypt(virtual_keyword8, strlen(virtual_keyword8), key);
-
-    // char virtual_keyword9[] = { 'C','i','t','r','i','x',' ','D','i','s','p','l','a','y',' ','A','d','a','p','t','e','r','\0' };
-    char virtual_keyword9[23] = {0x13, 0x33, 0x37, 0x2A, 0x33, 0x3B, 0x67, 0x1E, 0x21, 0x30, 0x26, 0x36, 0x31, 0x28, 0x74, 0x15, 0x35, 0x3B, 0x33, 0x39, 0x34, 0x33, 0x00 };
-    Xor_Encrypt(virtual_keyword9, strlen(virtual_keyword9), key);
-
-    // char virtual_keyword10[] = { 'G','D','I',' ','G','e','n','e','r','i','c','\0' };
-    char virtual_keyword10[12] = {0x17, 0x1E, 0x0A, 0x78, 0x1D, 0x26, 0x29, 0x3F, 0x3A, 0x2A, 0x35, 0x00 };
-    Xor_Encrypt(virtual_keyword10, strlen(virtual_keyword10), key);
-
-    // char virtual_keyword11[] = { 'V','B','O','X',' ','D','I','S','P',' ','A','d','a','p','t','e','r','\0' };
-    char virtual_keyword11[18] = {0x1A, 0x09, 0x18, 0x02, 0x73, 0x16, 0x1D, 0x0A, 0x07, 0x71, 0x1B, 0x3C, 0x22, 0x3D, 0x36, 0x2B, 0x24, 0x00 };
-    Xor_Encrypt(virtual_keyword11, strlen(virtual_keyword11), key2);
+    char virtual_keyword1_utka[] = "Microsoft Basic Display Adapter";
+    char virtual_keyword2_utka[] = "VMware SVGA 3D";
+    char virtual_keyword3_utka[] = "VirtualBox Graphics Adapter";
+    char virtual_keyword4_utka[] = "Hyper-V Video";
+    char virtual_keyword5_utka[] = "Parallels Display Adapter (WDDM)";
+    char virtual_keyword6_utka[] = "QXL";
+    char virtual_keyword7_utka[] = "Red Hat QXL";
+    char virtual_keyword8_utka[] = "Xen VGA";
+    char virtual_keyword9_utka[] = "Citrix Display Adapter";
+    char virtual_keyword10_utka[] = "GDI Generic";
+    char virtual_keyword11_utka[] = "VBOX DISP Adapter";
 
 
     char* virtual_keywords[] = {
-        virtual_keyword1,
-        virtual_keyword2,
-        virtual_keyword3,
-        virtual_keyword4,
-        virtual_keyword5,
-        virtual_keyword6,
-        virtual_keyword7,
-        virtual_keyword8,
-        virtual_keyword9,
-        virtual_keyword10,
-        virtual_keyword11
+        virtual_keyword1_utka,
+        virtual_keyword2_utka,
+        virtual_keyword3_utka,
+        virtual_keyword4_utka,
+        virtual_keyword5_utka,
+        virtual_keyword6_utka,
+        virtual_keyword7_utka,
+        virtual_keyword8_utka,
+        virtual_keyword9_utka,
+        virtual_keyword10_utka,
+        virtual_keyword11_utka
     };
 
     int keyword_count = sizeof(virtual_keywords) / sizeof(virtual_keywords[0]);
@@ -199,7 +163,6 @@ int Check_First_Video_Device()
         return 7;
     };
 
-    const char *key3 = "WZQRETOQIEI";
     
     /*
     char* virtual_codes[] = {                                     // Виртуальные VEN и DEV коды
@@ -217,198 +180,86 @@ int Check_First_Video_Device()
     };
     */
 
-    // char virtual_code1[]  = { 'V','E','N','_','1','5','A','D','\0' };
-    char virtual_code1[9] = {0x01, 0x1F, 0x1F, 0x0D, 0x74, 0x61, 0x0E, 0x15, 0x00 };
-    Xor_Encrypt(virtual_code1, strlen(virtual_code1), key3);
-    
-    // char virtual_code2[]  = { 'D','E','V','_','0','4','0','5','\0' };
-    char virtual_code2[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x60, 0x7F, 0x64, 0x00 };
-    Xor_Encrypt(virtual_code2, strlen(virtual_code2), key3);
-
-    // char virtual_code3[]  = { 'D','E','V','_','0','7','4','0','\0' };
-    char virtual_code3[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x63, 0x7B, 0x61, 0x00 };
-    Xor_Encrypt(virtual_code3, strlen(virtual_code3), key3);
-
-    // char virtual_code4[]  = { 'D','E','V','_','0','7','A','0','\0' };
-    char virtual_code4[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x63, 0x0E, 0x61, 0x00 };
-    Xor_Encrypt(virtual_code4, strlen(virtual_code4), key3);
-
-    // char virtual_code5[]  = { 'V','E','N','_','8','0','E','E','\0' };
-    char virtual_code5[9] = {0x01, 0x1F, 0x1F, 0x0D, 0x7D, 0x64, 0x0A, 0x14, 0x00 };
-    Xor_Encrypt(virtual_code5, strlen(virtual_code5), key3);
-
-    // char virtual_code6[]  = { 'D','E','V','_','B','E','E','F','\0' };
-    char virtual_code6[9] = {0x13, 0x1F, 0x07, 0x0D, 0x07, 0x11, 0x0A, 0x17, 0x00 };
-    Xor_Encrypt(virtual_code6, strlen(virtual_code6), key3);
-
-    // char virtual_code7[]  = { 'D','E','V','_','C','A','F','E','\0' };
-    char virtual_code7[9] = {0x13, 0x1F, 0x07, 0x0D, 0x06, 0x15, 0x09, 0x14, 0x00 };
-    Xor_Encrypt(virtual_code7, strlen(virtual_code7), key3);
-
-    // char virtual_code8[]  = { 'V','E','N','_','1','4','1','4','\0' };
-    char virtual_code8[9] = {0x01, 0x1F, 0x1F, 0x0D, 0x74, 0x60, 0x7E, 0x65, 0x00 };
-    Xor_Encrypt(virtual_code8, strlen(virtual_code8), key3);
-
-    // char virtual_code9[]  = { 'D','E','V','_','5','3','5','3','\0' };
-    char virtual_code9[9] = {0x13, 0x1F, 0x07, 0x0D, 0x70, 0x67, 0x7A, 0x62, 0x00 };
-    Xor_Encrypt(virtual_code9, strlen(virtual_code9), key3);
-
-    // char virtual_code10[] = { 'D','E','V','_','0','7','B','0','\0' };
-    char virtual_code10[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x63, 0x0D, 0x61, 0x00 };
-    Xor_Encrypt(virtual_code10, strlen(virtual_code9), key3);
-
-    // char virtual_code11[] = { 'D','E','V','_','0','8','B','0','\0' };
-    char virtual_code11[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x6C, 0x0D, 0x61, 0x00 };
-    Xor_Encrypt(virtual_code11, strlen(virtual_code11), key3);
-
-    // char virtual_code12[] = { 'V','E','N','_','1','A','F','4','\0' };
-    char virtual_code12[9] = {0x01, 0x1F, 0x1F, 0x0D, 0x74, 0x15, 0x09, 0x65, 0x00 };
-    Xor_Encrypt(virtual_code12, strlen(virtual_code12), key3);
-
-    // char virtual_code13[] = { 'D','E','V','_','1','1','1','0','\0' };
-    char virtual_code13[9] = {0x13, 0x1F, 0x07, 0x0D, 0x74, 0x65, 0x7E, 0x61, 0x00 };
-    Xor_Encrypt(virtual_code13, strlen(virtual_code13), key3);
-
-    // char virtual_code14[] = { 'V','E','N','_','1','A','B','8','\0' };
-    char virtual_code14[9] = {0x01, 0x1F, 0x1F, 0x0D, 0x74, 0x15, 0x0D, 0x69, 0x00 };
-    Xor_Encrypt(virtual_code14, strlen(virtual_code14), key3);
-
-    // char virtual_code15[] = { 'D','E','V','_','4','0','0','0','\0' };
-    char virtual_code15[9] = {0x13, 0x1F, 0x07, 0x0D, 0x71, 0x64, 0x7F, 0x61, 0x00 };
-    Xor_Encrypt(virtual_code15, strlen(virtual_code15), key3);
-
-    // char virtual_code16[] = { 'D','E','V','_','4','0','0','5','\0' };
-    char virtual_code16[9] = {0x13, 0x1F, 0x07, 0x0D, 0x71, 0x64, 0x7F, 0x64, 0x00 };
-    Xor_Encrypt(virtual_code16, strlen(virtual_code16), key3);
-
-    // char virtual_code17[] = { 'V','E','N','_','5','8','5','3','\0' };
-    char virtual_code17[9] = {0x01, 0x1F, 0x1F, 0x0D, 0x70, 0x6C, 0x7A, 0x62, 0x00 };
-    Xor_Encrypt(virtual_code17, strlen(virtual_code17), key3);
-
-    // char virtual_code18[] = { 'D','E','V','_','0','0','0','1','\0' };
-    char virtual_code18[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x60, 0x00 };
-    Xor_Encrypt(virtual_code18, strlen(virtual_code18), key3);
-
-    // char virtual_code19[] = { 'D','E','V','_','0','0','0','2','\0' };
-    char virtual_code19[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x63, 0x00 };
-    Xor_Encrypt(virtual_code19, strlen(virtual_code19), key3);
-
-    // char virtual_code20[] = { 'D','E','V','_','0','0','0','3','\0' };
-    char virtual_code20[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x62, 0x00 };
-    Xor_Encrypt(virtual_code20, strlen(virtual_code20), key3);
-
-    // char virtual_code21[] = { 'D','E','V','_','0','0','0','4','\0' };
-    char virtual_code21[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x65, 0x00 };
-    Xor_Encrypt(virtual_code21, strlen(virtual_code21), key3);
-
-    // char virtual_code22[] = { 'D','E','V','_','0','0','0','5','\0' };
-    char virtual_code22[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x64, 0x00 };
-    Xor_Encrypt(virtual_code22, strlen(virtual_code22), key3);
-
-    // char virtual_code23[] = { 'D','E','V','_','0','0','0','6','\0' };
-    char virtual_code23[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x67, 0x00 };
-    Xor_Encrypt(virtual_code23, strlen(virtual_code23), key3);
-
-    // char virtual_code24[] = { 'D','E','V','_','0','0','0','7','\0' };
-    char virtual_code24[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x66, 0x00 };
-    Xor_Encrypt(virtual_code24, strlen(virtual_code24), key3);
-
-    // char virtual_code25[] = { 'D','E','V','_','0','0','0','8','\0' };
-    char virtual_code25[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x69, 0x00 };
-    Xor_Encrypt(virtual_code25, strlen(virtual_code25), key3);
-
-    // char virtual_code26[] = { 'D','E','V','_','0','0','0','9','\0' };
-    char virtual_code26[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x68, 0x00 };
-    Xor_Encrypt(virtual_code26, strlen(virtual_code26), key3);
-
-    // char virtual_code27[] = { 'D','E','V','_','0','0','0','A','\0' };
-    char virtual_code27[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x10, 0x00 };
-    Xor_Encrypt(virtual_code27, strlen(virtual_code27), key3);
-
-    // char virtual_code28[] = { 'D','E','V','_','0','0','0','B','\0' };
-    char virtual_code28[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x13, 0x00 };
-    Xor_Encrypt(virtual_code28, strlen(virtual_code28), key3);
-
-    // char virtual_code29[] = { 'D','E','V','_','0','0','0','C','\0' };
-    char virtual_code29[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x12, 0x00 };
-    Xor_Encrypt(virtual_code29, strlen(virtual_code29), key3);
-
-    // char virtual_code30[] = { 'D','E','V','_','0','0','0','D','\0' };
-    char virtual_code30[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x15, 0x00 };
-    Xor_Encrypt(virtual_code30, strlen(virtual_code30), key3);
-
-    // char virtual_code31[] = { 'D','E','V','_','0','0','0','E','\0' };
-    char virtual_code31[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x14, 0x00 };
-    Xor_Encrypt(virtual_code31, strlen(virtual_code31), key3);
-
-    // char virtual_code32[] = { 'D','E','V','_','0','0','0','F','\0' };
-    char virtual_code32[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x64, 0x7F, 0x17, 0x00 };
-    Xor_Encrypt(virtual_code32, strlen(virtual_code32), key3);
-
-    // char virtual_code33[] = { 'V','E','N','_','1','2','3','4','\0' };
-    char virtual_code33[9] = {0x01, 0x1F, 0x1F, 0x0D, 0x74, 0x66, 0x7C, 0x65, 0x00 };
-    Xor_Encrypt(virtual_code33, strlen(virtual_code33), key3);
-
-    // char virtual_code34[] = { 'D','E','V','_','1','1','1','1','\0' };
-    char virtual_code34[9] = {0x13, 0x1F, 0x07, 0x0D, 0x74, 0x65, 0x7E, 0x60, 0x00 };
-    Xor_Encrypt(virtual_code34, strlen(virtual_code34), key3);
-
-    // char virtual_code35[] = { 'V','E','N','_','1','B','3','6','\0' };
-    char virtual_code35[9] = {0x01, 0x1F, 0x1F, 0x0D, 0x74, 0x16, 0x7C, 0x67, 0x00 };
-    Xor_Encrypt(virtual_code35, strlen(virtual_code35), key3);
-
-    // char virtual_code36[] = { 'D','E','V','_','0','1','0','0','\0' };
-    char virtual_code36[9] = {0x13, 0x1F, 0x07, 0x0D, 0x75, 0x65, 0x7F, 0x61, 0x00 };
-    Xor_Encrypt(virtual_code36, strlen(virtual_code35), key3);
-
-    // char virtual_code37[] = { 'V','E','N','_','1','A','E','0','\0' };
-    char virtual_code37[9] = {0x01, 0x1F, 0x1F, 0x0D, 0x74, 0x15, 0x0A, 0x61, 0x00 };
-    Xor_Encrypt(virtual_code37, strlen(virtual_code37), key3);
-
-    // char virtual_code38[] = { 'D','E','V','_','A','0','0','1','\0' };
-    char virtual_code38[9] = {0x13, 0x1F, 0x07, 0x0D, 0x04, 0x64, 0x7F, 0x60, 0x00 };
-    Xor_Encrypt(virtual_code38, strlen(virtual_code38), key3);
+    char virtual_code1_utka[]  = "VEN_15AD";
+    char virtual_code2_utka[]  = "DEV_0405";
+    char virtual_code3_utka[]  = "DEV_0740";
+    char virtual_code4_utka[]  = "DEV_07A0";
+    char virtual_code5_utka[]  = "VEN_80EE";
+    char virtual_code6_utka[]  = "DEV_BEEF";
+    char virtual_code7_utka[]  = "DEV_CAFE";
+    char virtual_code8_utka[]  = "VEN_1414";
+    char virtual_code9_utka[]  = "DEV_5353";
+    char virtual_code10_utka[] = "DEV_07B0";
+    char virtual_code11_utka[] = "DEV_08B0";
+    char virtual_code12_utka[] = "VEN_1AF4";
+    char virtual_code13_utka[] = "DEV_1110";
+    char virtual_code14_utka[] = "VEN_1AB8";
+    char virtual_code15_utka[] = "DEV_4000";
+    char virtual_code16_utka[] = "DEV_4005";
+    char virtual_code17_utka[] = "VEN_5853";
+    char virtual_code18_utka[] = "DEV_0001";
+    char virtual_code19_utka[] = "DEV_0002";
+    char virtual_code20_utka[] = "DEV_0003";
+    char virtual_code21_utka[] = "DEV_0004";
+    char virtual_code22_utka[] = "DEV_0005";
+    char virtual_code23_utka[] = "DEV_0006";
+    char virtual_code24_utka[] = "DEV_0007";
+    char virtual_code25_utka[] = "DEV_0008";
+    char virtual_code26_utka[] = "DEV_0009";
+    char virtual_code27_utka[] = "DEV_000A";
+    char virtual_code28_utka[] = "DEV_000B";
+    char virtual_code29_utka[] = "DEV_000C";
+    char virtual_code30_utka[] = "DEV_000D";
+    char virtual_code31_utka[] = "DEV_000E";
+    char virtual_code32_utka[] = "DEV_000F";
+    char virtual_code33_utka[] = "VEN_1234";
+    char virtual_code34_utka[] = "DEV_1111";
+    char virtual_code35_utka[] = "VEN_1B36";
+    char virtual_code36_utka[] = "DEV_0100";
+    char virtual_code37_utka[] = "VEN_1AE0";
+    char virtual_code38_utka[] = "DEV_A001";
 
     char* virtual_codes[] = {
-        virtual_code1,
-        virtual_code2,
-        virtual_code3,
-        virtual_code4,
-        virtual_code5,
-        virtual_code6,
-        virtual_code7,
-        virtual_code8,
-        virtual_code9,
-        virtual_code10,
-        virtual_code11,
-        virtual_code12,
-        virtual_code13,
-        virtual_code14,
-        virtual_code15,
-        virtual_code16,
-        virtual_code17,
-        virtual_code18,
-        virtual_code19,
-        virtual_code20,
-        virtual_code21,
-        virtual_code22,
-        virtual_code23,
-        virtual_code24,
-        virtual_code25,
-        virtual_code26,
-        virtual_code27,
-        virtual_code28,
-        virtual_code29,
-        virtual_code30,
-        virtual_code31,
-        virtual_code32,
-        virtual_code33,
-        virtual_code34,
-        virtual_code35,
-        virtual_code36,
-        virtual_code37,
-        virtual_code38
+        virtual_code1_utka,
+        virtual_code2_utka,
+        virtual_code3_utka,
+        virtual_code4_utka,
+        virtual_code5_utka,
+        virtual_code6_utka,
+        virtual_code7_utka,
+        virtual_code8_utka,
+        virtual_code9_utka,
+        virtual_code10_utka,
+        virtual_code11_utka,
+        virtual_code12_utka,
+        virtual_code13_utka,
+        virtual_code14_utka,
+        virtual_code15_utka,
+        virtual_code16_utka,
+        virtual_code17_utka,
+        virtual_code18_utka,
+        virtual_code19_utka,
+        virtual_code20_utka,
+        virtual_code21_utka,
+        virtual_code22_utka,
+        virtual_code23_utka,
+        virtual_code24_utka,
+        virtual_code25_utka,
+        virtual_code26_utka,
+        virtual_code27_utka,
+        virtual_code28_utka,
+        virtual_code29_utka,
+        virtual_code30_utka,
+        virtual_code31_utka,
+        virtual_code32_utka,
+        virtual_code33_utka,
+        virtual_code34_utka,
+        virtual_code35_utka,
+        virtual_code36_utka,
+        virtual_code37_utka,
+        virtual_code38_utka
     };
+
 
     keyword_count = sizeof(virtual_codes) / sizeof(virtual_codes[0]);
 
