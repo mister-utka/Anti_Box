@@ -33,8 +33,13 @@ python3 obfuscator.py
 gcc .\\Box_Obfuscate\\main.c -o .\\Box_Obfuscate\\main.exe -s -fno-ident "-Wl,--dynamicbase,--nxcompat,--subsystem,windows"
 ```
 -s	- удаляет всю отладочную информацию;
+
 -fno-ident - не вставляет строку "Compiled by GCC" в секции .comment;
+
 --nxcompat - включает защиту от исполнения данных (DEP);
+
 -Wl,...	- передаёт параметры напрямую линковщику (ld);
+
 --dynamicbase - включает ASLR (Address Space Layout Randomization) — защиту от эксплойтов, затрудняет предсказание адресов;
+
 --subsystem,windows - говорит системе, что это GUI-приложение, а не консольное — отключает консоль при запуске.
